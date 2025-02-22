@@ -1,4 +1,3 @@
-package ccprog3_mco;
 
 public class Animal extends Piece {
     protected String name;
