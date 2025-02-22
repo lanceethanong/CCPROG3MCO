@@ -61,6 +61,17 @@ public class Piece {
     public String getType() {
         return this.type;
     }
+
+    /**
+     * Method: getPower
+     * Description: gets the power of the piece
+     * @return type: int
+     * @author Lance Ethan S. Ong S14
+     * 
+     */
+    public int getPower() {
+        return this.power;
+    }
 }
 
 
