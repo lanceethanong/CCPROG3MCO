@@ -1,4 +1,3 @@
-package ccprog3_mco;
 
 /**
  * Class: Board
