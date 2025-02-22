@@ -412,11 +412,11 @@ public class Board {
     private boolean canCapture(Piece p, Piece t) 
     {
    
-        if (p.power == 1 && t.power == 8) //Special condition for Rat and Elephant
+        if (p.getPower() == 1 && t.getPower() == 8) //Special condition for Rat and Elephant
         {
             return true; //can capture
         }
-        if(p.power >= t.power) //To capture the piece of the player's power level must be greater than or equal to the enemys
+        if(p.getPower() >= t.getPower()) //To capture the piece of the player's power level must be greater than or equal to the enemys
         {
         return true; //can capture
         }
