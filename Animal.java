@@ -34,7 +34,7 @@ public class Animal extends Piece {
      */
     public String getAnimal()
     {
-    	return name;
+    	return this.name;
     }
     /**
      * Method: display
