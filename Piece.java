@@ -1,4 +1,3 @@
-
 /**
  * Class: Piece
  * Description: Main class responsible for handling the parameters of the pieces to be used in the game(Animals,Lake Blocks,Traps(to be implemented) and Bases) 
@@ -11,9 +10,9 @@ public class Piece {
 	 * player : which player the piece belongs to
 	 * type: Identifier to find out what type of piece it is
 	 */
-    int power; 
-    int player; 
-    String type; 
+    private int power; 
+    private int player; 
+    private String type; 
 
     /**
      * Method: Piece
@@ -60,7 +59,6 @@ public class Piece {
     public String getType() {
         return this.type;
     }
-
     /**
      * Method: getPower
      * Description: gets the power of the piece
@@ -72,7 +70,6 @@ public class Piece {
         return this.power;
     }
 }
-
 
 
 
