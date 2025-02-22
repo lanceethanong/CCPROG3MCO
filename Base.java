@@ -1,4 +1,4 @@
-package ccprog3_mco;
+
 /**
  * Class: Base
  * Description: Subclass of piece used to initialize the base blocks of each player
