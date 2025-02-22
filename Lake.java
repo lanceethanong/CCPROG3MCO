@@ -1,4 +1,4 @@
-package ccprog3_mco;
+
 
 /**
  * Class: Lake
