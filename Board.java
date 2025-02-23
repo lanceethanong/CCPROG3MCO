@@ -76,22 +76,28 @@ public class Board {
      * @author Lance Ethan S. Ong S14
      * 
      */
-    public void displayBoard() 
-    {
-    	// For loop to initialize all of the blocks into either blank or piece tiles
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (board[i][j] == null) { //If it is a null block
-                    System.out.print(". "); 
-                } 
-                else //If either an Animal,Base or Lake Piece is found
-                {
-                    System.out.print(board[i][j].display()); //Displays it on the board based on what the display method is found in their respective subclasses
-                }
-            }
-            System.out.println(); // New line
-        }
+    public void displayBoard() {
+    // Print column numbers at the top
+    System.out.print("  "); // Space for row numbers
+    for (int j = 0; j < cols; j++) {
+        System.out.print(j + " "); // Print column numbers
     }
+    System.out.println(); // New line after column numbers
+
+    // For loop to initialize all of the blocks into either blank or piece tiles
+    for (int i = 0; i < rows; i++) {
+        System.out.print(i + " "); // Print row number
+        for (int j = 0; j < cols; j++) {
+            if (board[i][j] == null) { // If it is a null block
+                System.out.print(". "); 
+            } 
+            else { // If either an Animal, Base, or Lake Piece is found
+                System.out.print(board[i][j].display()); // Displays it on the board based on what the display method is found in their respective subclasses
+            }
+        }
+        System.out.println(); // New line
+    }
+}
     /**
      * Method: movePiece
      * Description:Method used as a way to not only move a piece based on user input 
