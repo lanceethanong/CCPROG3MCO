@@ -30,7 +30,7 @@ public class Game {
             System.out.print("Enter the direction (W(up), A(left), S(down), D(right): ");
             char d = scanner.next().charAt(0);
 
-            if(board.movePiece(x,y,d) == true)
+            if(board.getPiece(x,y).getType().equals("Animal") && (currentPlayer == board.getPiece(x,y).getPlayerId()))
             {
             board.movePiece(x,y,d);
             if(currentPlayer == 1)
