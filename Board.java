@@ -68,8 +68,10 @@ public class Board {
         board[8][3] = p2Base;
         
         // Creates and assigns an Animal Object which include its Name,powerlevel and player it belongs to and then assigns it to a place on the board
-        board[8][2] = new Animal("Lion",7,1);
-        board[0][2] = new Animal("Tiger",6,2);
+        board[8][2] = new Animal("Elephant",8,1);
+        board[0][2] = new Animal("Dog",5,2);
+        board[6][2] = new Animal("Rat",1,2);
+        board[2][2] = new Animal("Tiger",6,1);
     }
     /**
      * Method: displayBoard
@@ -423,7 +425,8 @@ public class Board {
         {
             return true; //can capture
         }
-        if(p.getPower() >= t.getPower()) //To capture the piece of the player's power level must be greater than or equal to the enemys
+        
+        if (p.getPower() >= t.getPower()) //To capture the piece of the player's power level must be greater than or equal to the enemys
         {
         return true; //can capture
         }
@@ -431,6 +434,7 @@ public class Board {
         {
         return false; //cannot capture
         }
+        
     }
     
     public boolean GameOver() 
