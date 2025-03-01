@@ -1,3 +1,4 @@
+package ccprog3_mco;
 
 /**
  * Class: Board
@@ -67,8 +68,8 @@ public class Board {
         board[8][3] = p2Base;
         
         // Creates and assigns an Animal Object which include its Name,powerlevel and player it belongs to and then assigns it to a place on the board
-        board[0][0] = new Animal("Lion",7,1);
-        board[0][8] = new Animal("Tiger",6,2);
+        board[8][2] = new Animal("Lion",7,1);
+        board[0][2] = new Animal("Tiger",6,2);
     }
     /**
      * Method: displayBoard
@@ -77,27 +78,27 @@ public class Board {
      * 
      */
     public void displayBoard() {
-    // Print column numbers at the top
-    System.out.print("  "); // Space for row numbers
-    for (int j = 0; j < cols; j++) {
-        System.out.print(j + " "); // Print column numbers
-    }
-    System.out.println(); // New line after column numbers
-
-    // For loop to initialize all of the blocks into either blank or piece tiles
-    for (int i = 0; i < rows; i++) {
-        System.out.print(i + " "); // Print row number
+        // Print column numbers at the top
+        System.out.print("  "); // Space for row numbers
         for (int j = 0; j < cols; j++) {
-            if (board[i][j] == null) { // If it is a null block
-                System.out.print(". "); 
-            } 
-            else { // If either an Animal, Base, or Lake Piece is found
-                System.out.print(board[i][j].display()); // Displays it on the board based on what the display method is found in their respective subclasses
-            }
+            System.out.print(j + " "); // Print column numbers
         }
-        System.out.println(); // New line
+        System.out.println(); // New line after column numbers
+
+        // For loop to initialize all of the blocks into either blank or piece tiles
+        for (int i = 0; i < rows; i++) {
+            System.out.print(i + " "); // Print row number
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == null) { // If it is a null block
+                    System.out.print(". "); 
+                } 
+                else { // If either an Animal, Base, or Lake Piece is found
+                    System.out.print(board[i][j].display()); // Displays it on the board based on what the display method is found in their respective subclasses
+                }
+            }
+            System.out.println(); // New line
+        }
     }
-}
     /**
      * Method: movePiece
      * Description:Method used as a way to not only move a piece based on user input 
@@ -127,12 +128,13 @@ public class Board {
          * S: down(increases the x value)
          * D: right(increases the y value)
          */
-        switch (move) {
-            case 'W': newX--; break; 
-            case 'A': newY--; break; 
-            case 'S': newX++; break; 
-            case 'D': newY++; break; 
-            default: return false; // Invalid direction
+        switch (move) 
+        {
+        case 'W': case 'w': newX--; break; 
+        case 'A': case 'a': newY--; break; 
+        case 'S': case 's': newX++; break; 
+        case 'D': case 'd': newY++; break; 
+        default: return false; // Invalid direction
         }
 
         // If a player is trying to move to an out of bounds tile
@@ -430,6 +432,21 @@ public class Board {
         return false; //cannot capture
         }
     }
+    
+    public boolean GameOver() 
+    {
+        // Check if any piece is on the opponent's base
+        if(board[0][3].getType().equals("Animal") && board[0][3].getPlayerId() == 2)
+        {
+        	return true;
+        }
+
+        if(board[8][3].getType().equals("Animal") && board[8][3].getPlayerId() == 1)
+        {
+        	return true;
+        }
+        
+        return false;
+    }
 
 }
-
