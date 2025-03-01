@@ -30,16 +30,26 @@ public class Game {
             System.out.print("Enter the direction (W(up), A(left), S(down), D(right): ");
             char d = scanner.next().charAt(0);
 
-            if(board.getPiece(x,y).getType().equals("Animal") && (currentPlayer == board.getPiece(x,y).getPlayerId()))
+            if(currentPlayer == board.getPiece(x,y).getPlayerId())
             {
             board.movePiece(x,y,d);
-            if(currentPlayer == 1)
+            if(board.GameOver() == true)
             {
-            	currentPlayer++;
+            	board.displayBoard();
+            	System.out.println();
+            	System.out.println("Player "+currentPlayer+" has captured the enemy base and has won the game!");
+            	gameOver = true;
             }
             else
             {
-            	currentPlayer--;
+            	if(currentPlayer == 1)
+                {
+                	currentPlayer++;
+                }
+                else
+                {
+                	currentPlayer--;
+                }
             }
             }
             else
@@ -54,13 +64,8 @@ public class Game {
             	}
             	System.out.println();
             }
-            if(board.GameOver() == true)
-            {
-            	System.out.println();
-            	System.out.println("Player "+currentPlayer+"has captured the enemy base and has won the game!");
-            	gameOver = true;
-            }
             
+           
             System.out.println();
             
         }
