@@ -1,3 +1,11 @@
+package ccprog3_mco;
+import java.util.*;
+/**
+ * Class: Piece
+ * Description: Main class responsible for handling the parameters of the pieces to be used in the game(Animals,Lake Blocks,Traps(to be implemented) and Bases) 
+ * @author Lance Ethan S. Ong S14
+ * 
+ */
 /**
  * Class: Piece
  * Description: Main class responsible for handling the parameters of the pieces to be used in the game(Animals,Lake Blocks,Traps(to be implemented) and Bases) 
@@ -70,6 +78,5 @@ public class Piece {
         return this.power;
     }
 }
-
 
 
