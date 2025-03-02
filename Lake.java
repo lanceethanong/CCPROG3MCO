@@ -1,4 +1,5 @@
-
+package ccprog3_mco;
+import java.util.*;
 
 /**
  * Class: Lake
