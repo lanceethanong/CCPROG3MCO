@@ -1,6 +1,16 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
 package ccprog3_mco;
 
-import java.util.Scanner;
+/**
+ *
+ * @author cresc
+ */
+
+
+import java.util.*;
 
 public class Game {
     private Board board;
@@ -23,43 +33,62 @@ public class Game {
         {
             board.displayBoard();
             System.out.println("Player " + currentPlayer + "'s turn.");
-
-            System.out.print("Enter the coordinates of the piece to move: ");
+            System.out.println("x is the vertical numbers and y is the horizontal number");
+            
+            System.out.print("Enter the coordinates of the piece to move(x,y): ");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
+            boolean notOutOfBounds = true;
+            while(notOutOfBounds){
+                if(x>8 || y>6){
+                System.out.print("Out of Bounds Enter again: ");
+                x = scanner.nextInt();
+                y = scanner.nextInt();
+                }else
+                    notOutOfBounds=false;
+            }
+                
+
+            Piece selectedPiece = board.getPiece(x, y);
+            
+            while(selectedPiece==null){
+                System.out.print("No piece on the selected tile! Pick Again(x,y): ");
+                x = scanner.nextInt();
+                y = scanner.nextInt();
+                selectedPiece=board.getPiece(x, y);
+            }
             System.out.print("Enter the direction (W(up), A(left), S(down), D(right): ");
             char d = scanner.next().charAt(0);
+            while(d!='w' && d!='a' && d!='s' && d!='d' && d!='W' && d!='A' && d!= 'S' && d!='D'){
+                System.out.print("Incorrect Input \n Enter the direction (W(up), A(left), S(down), D(right):");
+                d=scanner.next().charAt(0);
+                System.out.println(d);  
+            }
+               
 
-            if(currentPlayer == board.getPiece(x,y).getPlayerId())
-            {
+            if(currentPlayer == selectedPiece.getPlayerId()){
             board.movePiece(x,y,d);
-            if(board.GameOver() == true)
-            {
+            if(board.GameOver() == true){
             	board.displayBoard();
             	System.out.println();
             	System.out.println("Player "+currentPlayer+" has captured the enemy base and has won the game!");
             	gameOver = true;
             }
-            else
-            {
-            	if(currentPlayer == 1)
-                {
+            else{
+            	if(currentPlayer == 1){
                 	currentPlayer++;
                 }
-                else
-                {
+                else{
                 	currentPlayer--;
                 }
             }
             }
             else
             {
-            	if(currentPlayer != board.getPiece(x,y).getPlayerId())
-            	{
+            	if(currentPlayer != board.getPiece(x,y).getPlayerId()){
             		System.out.println("Cannot move other players pieces! Try again");
             	}
-            	else
-            	{
+            	else{
             	System.out.println("That is not an animal piece! Try again");
             	}
             	System.out.println();
