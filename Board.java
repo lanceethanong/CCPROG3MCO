@@ -1,5 +1,5 @@
 package ccprog3_mco;
-
+import java.util.*;
 /**
  * Class: Board
  * Description: Main class used to handle the main gameBoard which include 
@@ -10,7 +10,7 @@ package ccprog3_mco;
  * @author Lance Ethan S. Ong S14
  * 
  */
-public class Board {
+    public class Board {
 	/* The Main objects of the class(All assigned private to follow encapsulation)
 	 * Piece[][] board: 2d array Used to create and access a Piece object and assign it to a space on the board(Mainly used for Animal movement)
 	 * Lake lake1 & Lake lake2: creates 2 separate Lake objects used to distinguish between which block belongs in which lake
@@ -18,7 +18,7 @@ public class Board {
 	 * cols: assigns the number of columns the board has, assigned a static value of 7 which is the same every game instance
 	 * Base p1Base & Base p2Base: used to create the Base object for p1 and p2 respectively
 	 */
-    private Piece[][] board;
+      private Piece[][] board;
     private Lake lake1; 
     private Lake lake2; 
     private static final int rows = 9;
