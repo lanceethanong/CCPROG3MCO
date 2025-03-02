@@ -51,12 +51,21 @@ public class Game {
 
             Piece selectedPiece = board.getPiece(x, y);
             
+            //when empty tile or null
             while(selectedPiece==null){
                 System.out.print("No piece on the selected tile! Pick Again(x,y): ");
                 x = scanner.nextInt();
                 y = scanner.nextInt();
                 selectedPiece=board.getPiece(x, y);
             }
+            //when picked a base
+            while(!selectedPiece.getType().equals("Animal")){
+                System.out.print("You can only move animal pieces! Pick Again(x,y):");
+                x = scanner.nextInt();
+                y = scanner.nextInt();
+                selectedPiece=board.getPiece(x, y);
+            }
+            
             System.out.print("Enter the direction (W(up), A(left), S(down), D(right): ");
             char d = scanner.next().charAt(0);
             while(d!='w' && d!='a' && d!='s' && d!='d' && d!='W' && d!='A' && d!= 'S' && d!='D'){
