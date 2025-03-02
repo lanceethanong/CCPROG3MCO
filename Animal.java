@@ -1,4 +1,6 @@
+package ccprog3_mco;
 
+import java.util.Scanner;
 
 /**
  * Class: Animal
