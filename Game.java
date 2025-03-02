@@ -78,7 +78,16 @@ public class Game {
                
 
             if(currentPlayer == selectedPiece.getPlayerId()){
-            board.movePiece(x,y,d);
+                boolean isValidMove = board.movePiece(x,y,d);
+                while(!isValidMove){
+                    System.out.println("Invalid move. Try again.");
+                    System.out.print("Enter the direction (W(up), A(left), S(down), D(right):");
+                    d=scanner.next().charAt(0);
+                    isValidMove = board.movePiece(x,y,d);
+                }
+                
+                    
+                
             if(board.GameOver() == true){
             	board.displayBoard();
             	System.out.println();
