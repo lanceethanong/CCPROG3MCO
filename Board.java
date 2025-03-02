@@ -176,65 +176,21 @@ import java.util.*;
         if (target != null && target.getType().equals("Lake")) // If the target space is a lake block
         {
          // Conditional statement to check whether the animal involved is a rat
-        	if (piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Rat")) {
-        	    if (board[x][y] == lake1 || board[x][y] == lake2) { // Rat is in the lake
-        	        
-        	        if (target == lake1 || target == lake2) { // Assumes rat goes to another lake tile     	            
-        	            if (board[newX][newY] == null) { // Move to an empty lake tile
-        	                
-        	                board[newX][newY] = piece;
-        	                board[x][y] = target; // Restore the lake tile
-        	                return true; // Valid move
-        	            } 
-        	            else if (board[newX][newY].getType().equals("Animal") && ((Animal) board[newX][newY]).getAnimal().equals("Rat")) { // If the enemy rat is in the space you want to go to
-        	                board[newX][newY] = piece; //Captures the enemy rat and removes the Object thus removing it from the board
-        	                board[x][y] = target; // Restore the lake tile
-        	                return true; // Valid move
-        	            }
-        	        } 
-        	        else // Rat is moving out of the lake 
-        	        {
-        	            
-        	            if (board[newX][newY] == null) // If it is a blank space
-        	            {
-        	                board[newX][newY] = piece; //Moves rat to space
-        	                board[x][y] = target; // Restore the lake tile
-        	                return true; // Valid move
-        	            } 
-        	            else if (board[newX][newY].getType().equals("Animal")) //If there is an animal blocking the way
-        	            {
-        	                if (((Animal) board[newX][newY]).getAnimal().equals("Elephant")) //Checks whether the animal in the way is an elephant
-        	                {
-        	                    return false; //Because the rat is still in the lake a capture cannot happen which makes the move invalid
-        	                }
-        	                if (canCapture(piece, board[newX][newY])) { //Just in case that another rat is in the way
-        	                    board[newX][newY] = piece; // Capture the opponent's piece
-        	                    board[x][y] = target; // Restore the lake tile
-        	                    return true; // Valid move
-        	                }
-        	               return false; //Because the rat has the lowest power other than another rat blocking the way it automatically makes it an invalid move
-        	            } 
-
-        	        }
-        	    } 
-        	    else {
-        	        // Rat is moving into the lake
-        	        if (board[newX][newY] == null) { //If it is just a lake tile
-        	            board[newX][newY] = piece; //Moves rat
-        	            board[x][y] = null;
-        	            return true; // Valid move
-        	        } else if (board[newX][newY].getType().equals("Animal") && ((Animal) board[newX][newY]).getAnimal().equals("Rat")) { //If the space has a rat in it
-        	            board[newX][newY] = piece;
-        	            board[x][y] = null;
-        	            return true; // Valid move
-        	        } else {
-        	            return false; // Cannot capture non-Rat pieces in the lake
-        	        }
-        	    }
-        	}
+            if (piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Rat")) {
+                if (board[newX][newY] == null || (board[newX][newY] instanceof Lake)) {
+                    board[newX][newY] = piece;
+                    if (isLakePosition(x, y)){
+                        board[x][y] = new Lake(); // Restore lake tile
+                    }else{
+                        board[x][y] = null;
+                    } // Restore lake tile if needed
+                    return true;
+                }
+                System.out.println("Only the Rat can enter the lake!");
+                return false;
         	
         	//Conditional statement this time for if the Animal involved is a Lion or a Tiger
-            if(piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Lion") || ((Animal) piece).getAnimal().equals("Tiger")) //checks whether the piece is an animal with the name Lion or Tiger
+           }if(piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Lion") || ((Animal) piece).getAnimal().equals("Tiger")) //checks whether the piece is an animal with the name Lion or Tiger
             {
             	if(target == lake1) // If the lake they enter is lake1
             	{
@@ -408,6 +364,20 @@ import java.util.*;
             }
         }
         return false; // No Rat found in the lake
+    }
+    private boolean isLakePosition(int x, int y) {
+        
+    int[][] lakePositions = {
+        {3, 1}, {3, 2}, {4, 1}, {4, 2}, {5, 1}, {5, 2}, 
+        {3, 4}, {3, 5}, {4, 4}, {4, 5}, {5, 4}, {5, 5}  
+    };
+    
+    for(int[] pos:lakePositions){
+        if (pos[0]==x && pos[1]==y){
+            return true;
+        }
+    }
+    return false;
     }
     
     /**
