@@ -179,7 +179,7 @@ import java.util.*;
             if (piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Rat")) {
                 if (board[newX][newY] == null || (board[newX][newY] instanceof Lake)) {
                     board[newX][newY] = piece;
-                    if (isLakePosition(x, y)){
+                    if (isLake1Position(x, y)){
                         board[x][y] = new Lake(); // Restore lake tile
                     }else{
                         board[x][y] = null;
@@ -193,7 +193,7 @@ import java.util.*;
            }
             if(piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Lion") 
                    || ((Animal) piece).getAnimal().equals("Tiger")){
-            	if(isLakePosition(newX, newY)) {
+            	if(isLake1Position(newX, newY)) {
             	    if(!checkForRat()){
             	    	if(piece == board[2][1] || piece == board[2][2]) // If they come from the top of the lake
             	    	{
@@ -311,27 +311,38 @@ import java.util.*;
             for (int j = 0; j < cols; j++) {
                 Piece piece = board[i][j];
                 if (piece != null && piece.getType().equals("Animal") && 
-                    ((Animal) piece).getAnimal().equals("Rat") && isLakePosition(i, j)) {
+                    ((Animal) piece).getAnimal().equals("Rat") && isLake1Position(i, j)) {
                     return true;
                 }
             }
         }
         return false;
     }
-    private boolean isLakePosition(int x, int y) {
+    private boolean isLake1Position(int x, int y) {
         
-    int[][] lakePositions = {
-        {3, 1}, {3, 2}, {4, 1}, {4, 2}, {5, 1}, {5, 2}, 
-        {3, 4}, {3, 5}, {4, 4}, {4, 5}, {5, 4}, {5, 5}  
+    int[][] lake1Positions = {
+        {3, 1}, {3, 2}, {4, 1}, {4, 2}, {5, 1}, {5, 2},   
     };
-    
-    for(int[] pos:lakePositions){
+    for(int[] pos:lake1Positions){
         if (pos[0]==x && pos[1]==y){
             return true;
         }
     }
     return false;
     }
+    private boolean isLake2Position(int x, int y) {
+        
+    int[][] lake2Positions = {
+        {3, 4}, {3, 5}, {4, 4}, {4, 5}, {5, 4}, {5, 5},   
+    };
+    for(int[] pos:lake2Positions){
+        if (pos[0]==x && pos[1]==y){
+            return true;
+        }
+    }
+    return false;
+    }
+
     
     /**
      * Method: canCapture
