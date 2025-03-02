@@ -48,7 +48,6 @@ public class Game {
                     notOutOfBounds=false;
             }
                 
-
             Piece selectedPiece = board.getPiece(x, y);
             
             //when empty tile or null
@@ -71,7 +70,10 @@ public class Game {
             while(d!='w' && d!='a' && d!='s' && d!='d' && d!='W' && d!='A' && d!= 'S' && d!='D'){
                 System.out.print("Incorrect Input \n Enter the direction (W(up), A(left), S(down), D(right):");
                 d=scanner.next().charAt(0);
-                System.out.println(d);  
+            }
+            while((d=='w' && x == 0) || (d=='a' && y==0) || (d=='s' && x==8) || (d=='d' && y==6)){
+                System.out.print("Out of Bounds!! \n Enter the direction (W(up), A(left), S(down), D(right):");
+                d=scanner.next().charAt(0);
             }
                
 
