@@ -326,7 +326,7 @@ import java.util.*;
             return false; //Invalid move 
             }
         }
-
+        
         //If the space landed is just a blank space
         board[newX][newY] = piece; //moves the piece
         board[x][y] = null;
