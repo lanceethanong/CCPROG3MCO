@@ -1,12 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
+
 
 package ccprog3_mco;
 
 /**
  *
- * @author cresc
+ * @author Lance Ethan S. Ong & Nick Jenson S. Crescini S14
  */
 
 
@@ -15,17 +13,21 @@ import java.util.*;
 public class Game {
     private Board board;
     private int currentPlayer;
+    private int x;
+    private int y;
+    private char d;
+    private boolean notOutOfBounds;
     public Game() 
     {
         board = new Board();
         currentPlayer = 1;
     }
 
-    public void startGame() {
+    public void initializeGame() {
         Scanner scanner = new Scanner(System.in);
         boolean gameOver = false;
 
-        System.out.println("Welcome to the Jungle Game!");
+        System.out.println("Welcome to Jungle King! Your goal is to capture the enemy's base before they do");
         System.out.println("Player 1 controls the pieces at the top, Player 2 at the bottom.");
         System.out.println("Use W, A, S, D to move your pieces.");
 
@@ -36,9 +38,9 @@ public class Game {
             System.out.println("x is the vertical numbers and y is the horizontal number");
             
             System.out.print("Enter the coordinates of the piece to move(x,y): ");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
-            boolean notOutOfBounds = true;
+            x = scanner.nextInt();
+            y = scanner.nextInt();
+            notOutOfBounds = true;
             while(notOutOfBounds){
                 if(x>8 || y>6){
                 System.out.print("Out of Bounds Enter again: ");
@@ -66,7 +68,7 @@ public class Game {
             }
             
             System.out.print("Enter the direction (W(up), A(left), S(down), D(right): ");
-            char d = scanner.next().charAt(0);
+            d = scanner.next().charAt(0);
             while(d!='w' && d!='a' && d!='s' && d!='d' && d!='W' && d!='A' && d!= 'S' && d!='D'){
                 System.out.print("Incorrect Input \n Enter the direction (W(up), A(left), S(down), D(right):");
                 d=scanner.next().charAt(0);
@@ -121,10 +123,5 @@ public class Game {
 
         scanner.close();
         System.out.println("Thanks for playing!");
-    }
-
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.startGame();
     }
 }
