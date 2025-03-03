@@ -45,7 +45,8 @@ package ccprog3_mco;
      * @author Lance Ethan S. Ong S14
      * 
      */
-    public final void initializePieces() {
+    public final void initializePieces() 
+    {
         // Assigns the lake blocks that are part of lake1
         board[3][1] = lake1;
         board[3][2] = lake1;
@@ -67,10 +68,10 @@ package ccprog3_mco;
         board[8][3] = p2Base;
         
         // Creates and assigns an Animal Object which include its Name,powerlevel and player it belongs to and then assigns it to a place on the board
-        board[8][2] = new Animal("Elephant",8,1);
-        board[0][2] = new Animal("Dog",5,2);
-        board[6][2] = new Animal("Tiger",6,2);
-        board[2][2] = new Animal("Rat",1,1);
+        board[0][0] = new Animal("Lion",7,1);
+        board[6][0] = new Animal("Elephant",8,2);
+        board[6][4] = new Animal("Tiger",6,2);
+        board[2][0] = new Animal("Rat",1,1);
     }
     /**
      * Method: displayBoard
@@ -108,7 +109,7 @@ package ccprog3_mco;
      *        y: integer of y coordinates
      *        move: char(W,A,S,D) use to indentify which direction the player wants to move
      * @return true or false: boolean (checks whether move is valid or not)            
-     * @author Lance Ethan S. Ong S14
+     * @author Lance Ethan S. Ong & Nick Jenson S. Crescini S14
      * 
      */
     public boolean movePiece(int x, int y, char move) 
@@ -163,16 +164,8 @@ package ccprog3_mco;
             return false; // Invalid move
         }
 
-        /*
-         * Conditional statement that handles all moves that involve the Piece going or interacting with the lake
-         * Handles the conditions: 1. Checks whether the object is a Piece
-         *                         2. Rat enters lake(Along with interactions with the enemy rat)
-         *                         3. Tiger and Lion encounter a lake and whether they can cross it
-         *                         4. Other animals enter lake
-         *                         5. Checks Whether the rat or the Lion or Tiger can eat the piece across the lake or in the lake
-         *                         6. Distinguishes between lakes
-         *           
-         */
+
+
         if (target != null && target.getType().equals("Lake") //if target is in a lake block
                 || target == null && (isLake1Position(x,y) || isLake2Position(x,y))) // if target is going out of lakeblock
         {
@@ -352,11 +345,11 @@ package ccprog3_mco;
     }
     
     /**
-     * Method: checksforRat
-     * Description: Checks the Lake object to see whether there is a rat present on the lake which makes it uncrossable for the Lion or Tiger
-     * @param lake: Lake
+     * Method: isRatBlockingPath
+     * Description: Checks the Lake object to see whether there is a rat in the lake blocking the path of the Lion or Tiger(based on which direction their going)
+     * @param int startX, int startY, int endX, int endY, char move
      * @return true or false: boolean
-     * @author Lance Ethan S. Ong S14
+     * @author Nick Jenson S. Crescini S14
      */
     private boolean isRatBlockingPath(int startX, int startY, int endX, int endY, char move) {
         if (move == 'w' || move == 'W') 
@@ -400,7 +393,13 @@ package ccprog3_mco;
             return false;
     }
 
-
+    /**
+     * Method: isLake1Position
+     * Description: Lists down all the positions that lake1 and checks if the current coordinates are a lake1 block or not, It is usually used for regenerating lake blocks 
+     * @param int x, int y
+     * @return true or false: boolean
+     * @author Nick Jenson S. Crescini S14
+     */
     private boolean isLake1Position(int x, int y) 
     {
         
@@ -415,7 +414,13 @@ package ccprog3_mco;
     }
     return false;
     }
-    
+    /**
+     * Method: isLake2Position
+     * Description: Lists down all the positions that lake1 and checks if the current coordinates are a lake2 block or not, It is usually used for regenerating lake blocks 
+     * @param int x, int y
+     * @return true or false: boolean
+     * @author Nick Jenson S. Crescini S14
+     */
     private boolean isLake2Position(int x, int y) 
     {
         
@@ -447,6 +452,11 @@ package ccprog3_mco;
     	{
     		return true;
     	}
+    	
+    	else if(p.getPower() == 8 && t.getPower() == 1)
+    	{
+    		return false;
+    	}
 
     	else if(p.getPower() >= t.getPower())
     	{
@@ -459,21 +469,29 @@ package ccprog3_mco;
 
         
     }
-    
+    /**
+     * Method: GameOver
+     * Description: checks whether a users Animal piece sucessfully reaches the enemy base(not their own) thus signifying the end of the game
+     * @return true or false: boolean
+     * @author Lance Ethan S. Ong S14
+     */
     public boolean GameOver() 
     {
-        // Check if any piece is on the opponent's base
+        // Check if the piece on p1Base is an Animal of Player2
         if(board[0][3].getType().equals("Animal") && board[0][3].getPlayerId() == 2)
         {
         	return true;
         }
-
+     // Check if the piece on p2Base is an Animal of Player1
         if(board[8][3].getType().equals("Animal") && board[8][3].getPlayerId() == 1)
         {
         	return true;
         }
-        
+        // If the game is still going
         return false;
+    }
+
+}  return false;
     }
 
 }
