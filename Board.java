@@ -121,7 +121,6 @@ import java.util.*;
         }
 
         int newX = x, newY = y; //used to assign the new space after a move is made
-
         /*
          * Switch case move used to move a piece
          * (Assume the board is viewed 1 way and the same for each player where the bottom player moves up and the top player moves down to start)
@@ -176,24 +175,60 @@ import java.util.*;
         if (target != null && target.getType().equals("Lake")) // If the target space is a lake block
         {
          // Conditional statement to check whether the animal involved is a rat
-            if (piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Rat")) {
-                if (board[newX][newY] == null || (board[newX][newY] instanceof Lake)) {
+            if (piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Rat")) 
+            {
+                if (board[newX][newY] instanceof Lake)
+                {
                     board[newX][newY] = piece;
-                    if (isLake1Position(x, y)){
-                        board[x][y] = new Lake(); // Restore lake tile
-                    }else{
-                        board[x][y] = null;
-                    } // Restore lake tile if needed
+                    if (isLake1Position(x, y)) 
+                    {
+                        board[x][y] = lake1; // Restore lake tile
+                    } 
+                    else if (isLake2Position(x, y)) 
+                    {
+                        board[x][y] = lake2; // Restore lake tile
+                    }
+                    else
+                    {
+                    	board[x][y] = null;
+                    }
                     return true;
                 }
-                System.out.println("Only the Rat can enter the lake!");
-                return false;
+
+                 if (board[newX][newY] == null) // If the target block is empty
+                  {
+                        board[newX][newY] = piece; // Move the rat to the new empty tile
+
+                        if (isLake1Position(x, y)) 
+                        {
+                            board[x][y] = lake1; // Restore lake tile
+                        } 
+                        else if (isLake2Position(x, y)) 
+                        {
+                            board[x][y] = lake2; // Restore lake tile
+                        }
+                        return true;
+                    }
+                    // If the target block has an Elephant and the Rat came from a lake, it cannot capture
+                    else if (board[newX][newY] != null && ((Animal) board[newX][newY]).getAnimal().equals("Elephant"))
+                    {
+                        if (isLake1Position(x, y) || isLake2Position(x, y)) // Check if Rat came from lake
+                        {
+                            System.out.println("A Rat cannot capture an Elephant right after leaving the lake!");
+                            return false; // Invalid move
+                        }
+                    }
+                
         	
         	//Conditional statement this time for if the Animal involved is a Lion or a Tiger
            }
+            
+            
             if(piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Lion") 
-                   || ((Animal) piece).getAnimal().equals("Tiger")){
-            	if(isLake1Position(newX, newY)) {
+                   || ((Animal) piece).getAnimal().equals("Tiger"))
+            {
+            	if(isLake1Position(newX, newY)) 
+            	{
             	    if(!checkForRat()){
             	    	if(piece == board[2][1] || piece == board[2][2]) // If they come from the top of the lake
             	    	{
@@ -236,15 +271,52 @@ import java.util.*;
                         }
             	    }
             	     //rat is in lake
-                        else{
-                            System.out.println("A rat is inside the lake! You cannot cross. Try again.");
-                            return false; // Invalid move, but don't change turn
+                     else{
+                          System.out.println("A rat is inside the lake! You cannot cross. Try again.");
+                          return false; // Invalid move, but don't change turn
                         }
             	}   		 
-                     else //if there is a rat in the lake 
-                     {
-                         return false; //cannot pass by the lake
-                     }
+            	if(isLake2Position(newX, newY)) 
+            	{
+            	    if (!checkForRat()) {
+            	        if (piece == board[2][4] || piece == board[2][5]) { // If they come from the top of Lake 2
+            	            newX = 6; // Let them go down to the next non-lake block
+            	        }
+            	        if (piece == board[6][4] || piece == board[6][5]) { // If they come from the bottom of Lake 2
+            	            newX = 2; // Let them go up to the next non-lake block
+            	        }
+            	        if (piece == board[3][3] || piece == board[4][3] || piece == board[5][3]) { // If they come from the left of Lake 2
+            	            newY = 6; // Let them go right to the next non-lake block
+            	        }
+            	        if (piece == board[3][6] || piece == board[4][6] || piece == board[5][6]) { // If they come from the right of Lake 2
+            	            newY = 3; // Let them go left to the next non-lake block
+            	        }
+
+            	        Piece dp = board[newX][newY]; // Assigns the dp Object to the new position on the board
+
+            	        // If the new space is blank
+            	        if (dp == null) {
+            	            board[newX][newY] = piece; // Move them to the new space
+            	            board[x][y] = null;
+            	            return true; // Valid move
+            	        }
+            	        // If the new space has a piece that the Lion or Tiger can capture
+            	        else if (dp.getType().equals("Animal") && dp.getPlayerId() != piece.getPlayerId()) { // Checks that it is an animal and an enemy
+            	            if (canCapture(piece, dp)) { // Checks if they can capture the enemy piece
+            	                board[newX][newY] = piece; // Capture the opponent's piece and remove it from the board
+            	                board[x][y] = null;
+            	                return true;
+            	            } else { // If the opponent's piece is stronger than the player's or is their own piece
+            	                return false; // Invalid move
+            	            }
+            	        }
+            	    } 
+            	    // A rat is in the lake
+            	    else {
+            	        System.out.println("A rat is inside the lake! You cannot cross. Try again.");
+            	        return false; // Invalid move, but don't change turn
+            	    }
+            	}
             }
             else //If the animal is not a rat,lion or tiger they cannot cross the lake
             {
@@ -305,13 +377,16 @@ import java.util.*;
      * @return true or false: boolean
      * @author Lance Ethan S. Ong S14
      */
-    private boolean checkForRat() 
+    public boolean checkForRat() 
     {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                Piece piece = board[i][j];
-                if (piece != null && piece.getType().equals("Animal") && 
-                    ((Animal) piece).getAnimal().equals("Rat") && isLake1Position(i, j)) {
+        for (int i = 3; i <= 5; i++) { // Rows where the lake is
+            for (int j = 1; j <= 2; j++) { // Left-side lake columns
+                if (board[i][j] != null && board[i][j].getType().equals("Animal") && ((Animal) board[i][j]).getAnimal().equals("Rat")) {
+                    return true;
+                }
+            }
+            for (int j = 4; j <= 5; j++) { // Right-side lake columns
+                if (board[i][j] != null && board[i][j].getType().equals("Animal") && ((Animal) board[i][j]).getAnimal().equals("Rat")) {
                     return true;
                 }
             }
@@ -320,7 +395,8 @@ import java.util.*;
     }
     private boolean isLake1Position(int x, int y) {
         
-    int[][] lake1Positions = {
+    int[][] lake1Positions = 
+    {
         {3, 1}, {3, 2}, {4, 1}, {4, 2}, {5, 1}, {5, 2},   
     };
     for(int[] pos:lake1Positions){
