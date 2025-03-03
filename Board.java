@@ -1,5 +1,4 @@
 package ccprog3_mco;
-import java.util.*;
 /**
  * Class: Board
  * Description: Main class used to handle the main gameBoard which include 
@@ -7,7 +6,7 @@ import java.util.*;
  *              2. Handling Player movement based on inputs from the Game method
  *              3. Handling special conditions for Lake, Base and Capture
  * 
- * @author Lance Ethan S. Ong S14
+ * @author Lance Ethan S. Ong & Nick Jenson S. Crescini S14
  * 
  */
     public class Board {
@@ -18,7 +17,7 @@ import java.util.*;
 	 * cols: assigns the number of columns the board has, assigned a static value of 7 which is the same every game instance
 	 * Base p1Base & Base p2Base: used to create the Base object for p1 and p2 respectively
 	 */
-      private Piece[][] board;
+    private Piece[][] board;
     private Lake lake1; 
     private Lake lake2; 
     private static final int rows = 9;
@@ -70,8 +69,8 @@ import java.util.*;
         // Creates and assigns an Animal Object which include its Name,powerlevel and player it belongs to and then assigns it to a place on the board
         board[8][2] = new Animal("Elephant",8,1);
         board[0][2] = new Animal("Dog",5,2);
-        board[6][2] = new Animal("Tiger",1,2);
-        board[2][2] = new Animal("Rat",6,1);
+        board[6][2] = new Animal("Tiger",6,2);
+        board[2][2] = new Animal("Rat",1,1);
     }
     /**
      * Method: displayBoard
@@ -186,18 +185,18 @@ import java.util.*;
                     if (isLake1Position(x, y)) 
                     {
                         board[x][y] = lake1; // Restore lake tile
-                        System.out.println("Restoring Lake1 at (" + x + "," + y + ")");
+                        
                         
                     } 
                     else if (isLake2Position(x, y)) 
                     {
                         board[x][y] = lake2; // Restore lake tile
-                        System.out.println("Restoring Lake2 at (" + x + "," + y + ")");
+                       
                     }
                     else
                     {
                     	board[x][y] = null;
-                        System.out.println("Setting (" + x + "," + y + ") to null");
+                        
                     }
                     return true;
                 }
@@ -207,15 +206,15 @@ import java.util.*;
 
                         if (isLake1Position(x, y)) {
                             board[x][y] = lake1; // Restore lake tile
-                            System.out.println("Restoring Lake1 at (" + x + "," + y + ")");
+                            
                         } 
                         else if (isLake2Position(x, y)) {
                             board[x][y] = lake2; // Restore lake tile
-                            System.out.println("Restoring Lake2 at (" + x + "," + y + ")");
+                            
                         }
                         else{
                             board[x][y] = null;
-                            System.out.println("Setting (" + x + "," + y + ") to null");
+                           
                         }
                         return true;
                     }
@@ -244,10 +243,9 @@ import java.util.*;
                     tempNewY = newY+3;
                 }
                 
-                /*System.out.println(newX);
-                System.out.println(newY);
-                */
-            	if(!isRatBlockingPath(x,y,tempNewX,tempNewY,move)){
+
+            	if(!isRatBlockingPath(x,y,tempNewX,tempNewY,move))
+            	{
                         if(piece == board[2][1] || piece == board[2][2]) // If they come from the top of the lake
             	    	{
             	    	newX = 6; //lets them go down to the next non lake block
@@ -264,6 +262,24 @@ import java.util.*;
                         if(piece == board[3][3] || piece == board[4][3] || piece == board[5][3]) // If they come from the right of the lake
                         {
                         newY = 0; //lets them go left to the next non lake block
+                        }                      
+                        if (piece == board[2][4] || piece == board[2][5]) {
+                            newX = 6; // Jump to the bottom non-lake block
+                        }
+
+                        // If the piece is coming from the bottom of Lake 2
+                        if (piece == board[6][4] || piece == board[6][5]) {
+                            newX = 2; // Jump to the top non-lake block
+                        }
+
+                        // If the piece is coming from the left of Lake 2
+                        if (piece == board[3][3] || piece == board[4][3] || piece == board[5][3]) {
+                            newY = 6; // Jump to the right non-lake block
+                        }
+
+                        // If the piece is coming from the right of Lake 2
+                        if (piece == board[3][6] || piece == board[4][6] || piece == board[5][6]) {
+                            newY = 3; // Jump to the left non-lake block
                         }
                         Piece dp = board[newX][newY]; //Assigns the dp Object to the new position on the board
                         // If the new space is blank
@@ -272,11 +288,11 @@ import java.util.*;
                             board[x][y] = null;
                             return true; // valid move
                         }
-                }else{
-                         System.out.println("");
-                          System.out.println("A rat is inside the lake! You cannot cross. Try again.");
-                          return false; // Invalid move, but don't change turn
-                     }
+                }
+            	else
+                {
+                 return false; // Invalid move, but don't change turn
+                }          	
             }
             else //If the animal is not a rat,lion or tiger they cannot cross the lake
             {
@@ -343,8 +359,9 @@ import java.util.*;
      * @author Lance Ethan S. Ong S14
      */
     private boolean isRatBlockingPath(int startX, int startY, int endX, int endY, char move) {
-        if (move == 'w' || move == 'W') {
-            for (int i = startX - 1; i > endX; i--) {
+        if (move == 'w' || move == 'W') 
+        {
+            for (int i = startX - 1; i > endX + 1; i--) {
                 if (board[i][startY] != null && 
                     board[i][startY].getType().equals("Animal") && 
                     ((Animal) board[i][startY]).getAnimal().equals("Rat")) {
@@ -353,7 +370,7 @@ import java.util.*;
                 }
             }
         }if (move == 's' || move == 'S') {
-            for (int i = startX + 1; i < endX; i++) {
+            for (int i = startX + 1; i < endX - 1; i++) {
                 if (board[i][startY] != null && 
                     board[i][startY].getType().equals("Animal") && 
                     ((Animal) board[i][startY]).getAnimal().equals("Rat")) {
@@ -362,7 +379,7 @@ import java.util.*;
                 }
             }
         }if (move == 'a' || move == 'A') {
-            for (int j = startY - 1; j > endY; j--) {
+            for (int j = startY - 1; j > endY + 1; j--) {
                 if (board[startX][j] != null && 
                     board[startX][j].getType().equals("Animal") && 
                     ((Animal) board[startX][j]).getAnimal().equals("Rat")) {
@@ -371,7 +388,7 @@ import java.util.*;
                 }
             }
         }if (move == 'd' || move == 'D') {
-            for (int j = startY + 1; j < endY; j++) {
+            for (int j = startY + 1; j < endY - 1; j++) {
                 if (board[startX][j] != null && 
                     board[startX][j].getType().equals("Animal") && 
                     ((Animal) board[startX][j]).getAnimal().equals("Rat")) {
@@ -384,7 +401,8 @@ import java.util.*;
     }
 
 
-    private boolean isLake1Position(int x, int y) {
+    private boolean isLake1Position(int x, int y) 
+    {
         
     int[][] lake1Positions = 
     {
@@ -397,7 +415,9 @@ import java.util.*;
     }
     return false;
     }
-    private boolean isLake2Position(int x, int y) {
+    
+    private boolean isLake2Position(int x, int y) 
+    {
         
     int[][] lake2Positions = {
         {3, 4}, {3, 5}, {4, 4}, {4, 5}, {5, 4}, {5, 5},   
@@ -422,19 +442,21 @@ import java.util.*;
     private boolean canCapture(Piece p, Piece t) 
     {
    
-        if (p.getPower() == 1 && t.getPower() == 8) //Special condition for Rat and Elephant
-        {
-            return true; //can capture
-        }
-        
-        if (p.getPower() >= t.getPower()) //To capture the piece of the player's power level must be greater than or equal to the enemys
-        {
-        return true; //can capture
-        }
-        else
-        {
-        return false; //cannot capture
-        }
+
+    	if(p.getPower() == 1 && t.getPower() == 8)
+    	{
+    		return true;
+    	}
+
+    	else if(p.getPower() >= t.getPower())
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+
         
     }
     
@@ -455,3 +477,4 @@ import java.util.*;
     }
 
 }
+
