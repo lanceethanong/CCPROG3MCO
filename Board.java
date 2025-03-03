@@ -141,6 +141,7 @@ import java.util.*;
         // If a player is trying to move to an out of bounds tile
         if (newX < 0 || newX >= rows || newY < 0 || newY >= cols) 
         {
+        	System.out.println("Invalid space!");
             return false; // Invalid move
         }
 
@@ -159,6 +160,7 @@ import java.util.*;
                 board[x][y] = null; // Makes previous position back to a blank tile
                 return true; // Returns a valid move(Win condition handled by Game class)
             }
+            System.out.println("Cannot go to your own base!");
             return false; // Invalid move
         }
 
@@ -229,7 +231,8 @@ import java.util.*;
             {
             	if(isLake1Position(newX, newY)) 
             	{
-            	    if(!checkForRat()){
+            	    if(!checkForRat())
+            	    {
             	    	if(piece == board[2][1] || piece == board[2][2]) // If they come from the top of the lake
             	    	{
             	    	newX = 6; //lets them go down to the next non lake block
@@ -266,15 +269,17 @@ import java.util.*;
                             } 
                             else //if the opponents piece is stronger than the players or is your own piece
                             {
+                            	System.out.println("Cannot capture the enemy piece!");
                                 return false; // invalid move
                             }
                         }
             	    }
             	     //rat is in lake
-                     else{
+                     else
+                     {
                           System.out.println("A rat is inside the lake! You cannot cross. Try again.");
                           return false; // Invalid move, but don't change turn
-                        }
+                     }
             	}   		 
             	if(isLake2Position(newX, newY)) 
             	{
@@ -306,7 +311,8 @@ import java.util.*;
             	                board[newX][newY] = piece; // Capture the opponent's piece and remove it from the board
             	                board[x][y] = null;
             	                return true;
-            	            } else { // If the opponent's piece is stronger than the player's or is their own piece
+            	            } else { // If the opponent's piece is stronger than the player's or is their own piece\
+            	            	System.out.println("Cannot capture the enemy piece!");
             	                return false; // Invalid move
             	            }
             	        }
@@ -320,6 +326,7 @@ import java.util.*;
             }
             else //If the animal is not a rat,lion or tiger they cannot cross the lake
             {
+            System.out.println("Animal cannot cross the lake. Try again.");
             return false; // invalid move
             }
         }
@@ -335,6 +342,7 @@ import java.util.*;
            
             if (target.getPlayerId() == piece.getPlayerId()) //If the target piece is the player's
             {
+            	System.out.println("You cannot capture your own piece");
                 return false; //Invalid move
             }
 
@@ -347,6 +355,7 @@ import java.util.*;
             }
             else //if the enemy is stronger
             {
+            System.out.println("You cannot capture your enemy piece");
             return false; //Invalid move 
             }
         }
