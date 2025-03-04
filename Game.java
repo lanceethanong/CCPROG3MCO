@@ -26,7 +26,7 @@ public class Game {
     private int y;
     private char d;
     private boolean notOutOfBounds;
-    
+    private ArrayList<Animal> animals;
     /**
      * Method : Game
      * Description : constructor used to initialize a Game Instance
@@ -35,12 +35,12 @@ public class Game {
     public Game() 
     {
         board = new Board(); // creates a new Game Board
-        currentPlayer = 1; // Starts game with Player 1(can be modified)
+        currentPlayer = FirstPlayer(); // Calls the firstplayer method to determine which player will start the game
     }
     /**
      * Method : initializeGame
      * Description : Used to handle the gameflow(start to end) along with the user inputs and updating of the board along with showing the status of the game 
-     * @author Nick Jenson S. Crescini & Lance Ethan S. Ong S14
+     * @author Nick Jenson S. Crescini S14
      */
     public void initializeGame() {
         Scanner scanner = new Scanner(System.in); //Initializes the scanner
@@ -152,9 +152,63 @@ public class Game {
         scanner.close(); //closes scanner just to be sure
         System.out.println("Thanks for playing!");
     }
-}
+    
+    /**
+     * Method: FirstPlayer
+     * Description: A method that determines who goes first based on a card game where each player 
+     * is asked to pick a number and based on what animals each player picks decides who gets the first move
+     * @return int 1 || 2
+     * References:  https://www.geeksforgeeks.org/collections-shuffle-method-in-java-with-examples/(Used for the collection.shuffle utility)
+     * @author Lance Ethan S. Ong S14
+     */
+    
+    private int FirstPlayer() 
+    {
+    	animals = new ArrayList<>(); //creates a new temporary arrayList that is not saved to the board or game and only used for this purpose
+    	// adds all animals with their respective power(player set to 0 as for this purpose it does not belong to anyone)
+    	animals.add(new Animal("Elephant", 8, 0));
+    	animals.add(new Animal("Lion", 7, 0));
+    	animals.add(new Animal("Tiger", 6, 0));
+    	animals.add(new Animal("Leopard", 5, 0));
+    	animals.add(new Animal("Wolf", 4, 0));
+    	animals.add(new Animal("Dog", 3, 0));
+    	animals.add(new Animal("Cat", 2, 0));
+    	animals.add(new Animal("Rat", 1, 0));
 
-        scanner.close();
-        System.out.println("Thanks for playing!");
+        Collections.shuffle(animals); //Java utility that shuffles the order of the index of each Instance in the ArrayList
+        Scanner scanner = new Scanner(System.in); //Initiates a new scanner object(not closed as it is still needed for the actually gameplay)
+
+        System.out.println("Each player, pick an animal piece (1-8):"); //Asks user to pick a number
+
+        System.out.print("Player 1, choose a number: ");
+        int c1 = scanner.nextInt() - 1; //-1 to associate it with the index and avoid out of bounds 
+        System.out.print("Player 2, choose a number: ");
+        int c2 = scanner.nextInt() - 1;
+        
+        //Gets the animal names using the Animal data type(mainly for display purposes)
+        Animal animal1 = animals.get(c1);
+        Animal animal2 = animals.get(c2);
+        
+        //Displays the animal each user picked 
+        System.out.println("Player 1 chose: " + animal1.getAnimal());
+        System.out.println("Player 2 chose: " + animal2.getAnimal());
+        
+        //If player1 chose the animal with the higher power
+        if(animals.get(c1).getPower() > animals.get(c2).getPower())
+        {
+        	System.out.println("Player 1 chose the stronger animal and therefore will get the first move");
+        	System.out.println();
+        	System.out.println();
+        	return 1; // returns 1 to signify the currentPlayer is player 1
+        }
+        //If player 2 chose the animal with the higher power
+        else
+        {
+        	System.out.println("Player 2 chose the stronger animal and therefore will get the first move");
+		System.out.println();
+        	System.out.println();
+        	return 2; // returns 2 to signify the currentPlayer is player 2
+        }
+        
     }
 }
