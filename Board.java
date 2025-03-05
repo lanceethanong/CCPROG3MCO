@@ -491,8 +491,5 @@ package ccprog3_mco;
         return false;
     }
 
-}  return false;
-    }
-
-}
+}  
 
