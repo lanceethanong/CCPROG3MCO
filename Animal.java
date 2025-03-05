@@ -50,10 +50,5 @@ public class Animal extends Piece {
         return String.valueOf(name.charAt(0)) + " "; // Displays the first letter of the String = (ex. Lion = "L ")
     }
     
-    public boolean lakePass(){
-        if(getAnimal().equals("Rat")){
-            return true;
-        }
-        return false;
-    }
+
 }   
