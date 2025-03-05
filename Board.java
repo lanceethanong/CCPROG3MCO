@@ -221,9 +221,11 @@ package ccprog3_mco;
                         }
                     }
            }
+            // if animal lion or tiger going accross the lake
             if(piece.getType().equals("Animal") && ((Animal) piece).getAnimal().equals("Lion") 
                    || ((Animal) piece).getAnimal().equals("Tiger")){
                 
+                //gets the new direction of the jump from lake
                 int tempNewX =0;
                 int tempNewY = 0;
                 if(move == 'W' || move == 'w'){
@@ -236,9 +238,10 @@ package ccprog3_mco;
                     tempNewY = newY+3;
                 }
                 
-
+                //check if rat is blocking the path
             	if(!isRatBlockingPath(x,y,tempNewX,tempNewY,move))
             	{
+                    //if rat is not blocking can jump
                         if(piece == board[2][1] || piece == board[2][2]) // If they come from the top of the lake
             	    	{
             	    	newX = 6; //lets them go down to the next non lake block
@@ -352,6 +355,7 @@ package ccprog3_mco;
      * @author Nick Jenson S. Crescini S14
      */
     private boolean isRatBlockingPath(int startX, int startY, int endX, int endY, char move) {
+        //when moving forward checks if there is a rat in the way
         if (move == 'w' || move == 'W') 
         {
             for (int i = startX - 1; i > endX + 1; i--) {
@@ -362,6 +366,7 @@ package ccprog3_mco;
                     return true;
                 }
             }
+        //when moving Backward checks if there is a rat in the way
         }if (move == 's' || move == 'S') {
             for (int i = startX + 1; i < endX - 1; i++) {
                 if (board[i][startY] != null && 
@@ -371,6 +376,7 @@ package ccprog3_mco;
                     return true;
                 }
             }
+        //when moving to the left checks if there is a rat in the way
         }if (move == 'a' || move == 'A') {
             for (int j = startY - 1; j > endY + 1; j--) {
                 if (board[startX][j] != null && 
@@ -380,6 +386,7 @@ package ccprog3_mco;
                     return true;
                 }
             }
+        //when moving to the right checks if there is a rat in the way
         }if (move == 'd' || move == 'D') {
             for (int j = startY + 1; j < endY - 1; j++) {
                 if (board[startX][j] != null && 
@@ -405,6 +412,7 @@ package ccprog3_mco;
         
     int[][] lake1Positions = 
     {
+        //the lake1 positions
         {3, 1}, {3, 2}, {4, 1}, {4, 2}, {5, 1}, {5, 2},   
     };
     for(int[] pos:lake1Positions){
@@ -416,7 +424,7 @@ package ccprog3_mco;
     }
     /**
      * Method: isLake2Position
-     * Description: Lists down all the positions that lake1 and checks if the current coordinates are a lake2 block or not, It is usually used for regenerating lake blocks 
+     * Description: Lists down all the positions that lake2 and checks if the current coordinates are a lake2 block or not, It is usually used for regenerating lake blocks 
      * @param int x, int y
      * @return true or false: boolean
      * @author Nick Jenson S. Crescini S14
@@ -425,6 +433,7 @@ package ccprog3_mco;
     {
         
     int[][] lake2Positions = {
+        // lake 2 posititions
         {3, 4}, {3, 5}, {4, 4}, {4, 5}, {5, 4}, {5, 5},   
     };
     for(int[] pos:lake2Positions){
