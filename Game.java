@@ -41,7 +41,7 @@ public class Game {
      * Description : Used to handle the gameflow(start to end) along with the user inputs and updating of the board along with showing the status of the game 
      * @author Nick Jenson S. Crescini S14
      */
-    public void initializeGame() {
+    public void startGame() {
         Scanner scanner = new Scanner(System.in); //Initializes the scanner
         boolean gameOver = false; // sets it to false to check if the game is still going
 
