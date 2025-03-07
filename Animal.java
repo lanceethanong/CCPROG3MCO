@@ -47,7 +47,7 @@ public class Animal extends Piece {
      */
     public String display() 
     {
-        return String.valueOf(name.charAt(0)) + " "; // Displays the first letter of the String = (ex. Lion = "L ")
+         return String.valueOf(name.charAt(0)) + getPlayerId()+"";  // Displays the first letter of the String = (ex. Lion = "L ")
     }
     
 
