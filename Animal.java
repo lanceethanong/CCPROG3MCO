@@ -1,7 +1,5 @@
 package ccprog3_mco;
 
-import java.util.Scanner;
-
 /**
  * Class: Animal
  * Description: Is a subclass of Piece used to initialize the Animal pieces of each player and assign it its values
@@ -15,9 +13,9 @@ public class Animal extends Piece {
     /**
      * Method: Animal
      * Description: Constructor used to initialize a new Animal object
-     * @param Name: String used to assign the animal a name
-     *        power: assigns their power level
-     *        player: assigns which player it belongs to
+     * @param name: String used to assign the animal a name
+     * @param power: assigns their power level
+     * @param player: assigns which player it belongs to
      * @author Lance Ethan S. Ong S14
      * 
      */
@@ -47,8 +45,8 @@ public class Animal extends Piece {
      */
     public String display() 
     {
-         return String.valueOf(name.charAt(0)) + getPlayerId()+"";  // Displays the first letter of the String = (ex. Lion = "L ")
+        return String.valueOf(name.charAt(0)) + getPlayerId()+""; // Displays the first letter of the String = (ex. Lion = "L ")
     }
     
 
-}   
+}
