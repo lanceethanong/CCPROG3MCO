@@ -6,7 +6,7 @@ import java.util.*; // in order to use the Scanner and other utilities
  * Description : Class used to start a game and is used for the main gameplay, 
  * It would make use of a turn based system that makes use of the Board class and its methods implemented for both movement 
  * and condition checking. 
- * @author Lance Ethan S. Ong & Nick Jenson S. Crescini S14
+ * @author Lance Ethan S. Ong  Nick Jenson S. Crescini S14
  */
 public class Game {
 	/*
@@ -37,7 +37,7 @@ public class Game {
         currentPlayer = FirstPlayer(); // Calls the firstplayer method to determine which player will start the game
     }
     /**
-     * Method : initializeGame
+     * Method : startGame
      * Description : Used to handle the gameflow(start to end) along with the user inputs and updating of the board along with showing the status of the game 
      * @author Nick Jenson S. Crescini S14
      */
