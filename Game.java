@@ -171,9 +171,4 @@ public class Game {
         scanner.close();
         System.out.println("Thanks for playing!");
     }
-
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.startGame();
-    }
 }
