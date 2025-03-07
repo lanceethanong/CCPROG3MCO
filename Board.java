@@ -6,7 +6,7 @@ package ccprog3_mco;
  *              2. Handling Player movement based on inputs from the Game method
  *              3. Handling special conditions for Lake, Base and Capture
  * 
- * @author Lance Ethan S. Ong & Nick Jenson S. Crescini S14
+ * @author Lance Ethan S. Ong  Nick Jenson S. Crescini S14
  * 
  */
     public class Board {
@@ -106,8 +106,8 @@ package ccprog3_mco;
      * Description:Method used as a way to not only move a piece based on user input 
      *             but also is used as a checker to see whether the move is valid and the respective actions to take once a move is done
      * @param x: integer of x coordinates
-     *        y: integer of y coordinates
-     *        move: char(W,A,S,D) use to indentify which direction the player wants to move
+     * @param y: integer of y coordinates
+     * @param move: char(W,A,S,D) use to indentify which direction the player wants to move
      * @return true or false: boolean (checks whether move is valid or not)            
      * @author Lance Ethan S. Ong & Nick Jenson S. Crescini S14
      * 
@@ -337,8 +337,8 @@ package ccprog3_mco;
     /**
      * Method: getPiece
      * Description: When called gets returns the Piece on the board given the x and y
-     * @param x
-     *        y
+     * @param x : x coordinates
+     * @param y : y coordinates
      * @return board[x][y]: Piece
      * @author Lance Ethan S. Ong S14
      */
@@ -350,8 +350,12 @@ package ccprog3_mco;
     /**
      * Method: isRatBlockingPath
      * Description: Checks the Lake object to see whether there is a rat in the lake blocking the path of the Lion or Tiger(based on which direction their going)
-     * @param int startX, int startY, int endX, int endY, char move
-     * @return true or false: boolean
+     * @param startX : start x coordinates
+     * @param startY : start y coordinates
+     * @param endX : target x coordinates
+     * @param endY : target y coordinates
+     * @param move : direction
+     * @return true or false: if the move is valid
      * @author Nick Jenson S. Crescini S14
      */
     private boolean isRatBlockingPath(int startX, int startY, int endX, int endY, char move) {
@@ -403,7 +407,8 @@ package ccprog3_mco;
     /**
      * Method: isLake1Position
      * Description: Lists down all the positions that lake1 and checks if the current coordinates are a lake1 block or not, It is usually used for regenerating lake blocks 
-     * @param int x, int y
+     * @param x : x coordinates
+     * @param y : y coordinates
      * @return true or false: boolean
      * @author Nick Jenson S. Crescini S14
      */
@@ -424,8 +429,9 @@ package ccprog3_mco;
     }
     /**
      * Method: isLake2Position
-     * Description: Lists down all the positions that lake2 and checks if the current coordinates are a lake2 block or not, It is usually used for regenerating lake blocks 
-     * @param int x, int y
+     * Description: Lists down all the positions that lake1 and checks if the current coordinates are a lake1 block or not, It is usually used for regenerating lake blocks 
+     * @param x : x coordinates
+     * @param y : y coordinates
      * @return true or false: boolean
      * @author Nick Jenson S. Crescini S14
      */
@@ -449,7 +455,7 @@ package ccprog3_mco;
      * Method: canCapture
      * Description: checks whether a Piece can eat the other piece based on power level
      * @param p: Piece
-     *        t: Piece
+     * @param t: Piece
      * @return true or false: boolean
      * @author Lance Ethan S. Ong S14
      */
