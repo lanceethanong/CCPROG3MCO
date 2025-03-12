@@ -163,23 +163,28 @@ public class Game {
     
     private int FirstPlayer() 
     {
-    	animals = new ArrayList<>(); //creates a new temporary arrayList that is not saved to the board or game and only used for this purpose
-    	// adds all animals with their respective power(player set to 0 as for this purpose it does not belong to anyone)
-    	animals.add(new Animal("Elephant", 8, 0));
-    	animals.add(new Animal("Lion", 7, 0));
-    	animals.add(new Animal("Tiger", 6, 0));
-    	animals.add(new Animal("Leopard", 5, 0));
-    	animals.add(new Animal("Wolf", 4, 0));
-    	animals.add(new Animal("Dog", 3, 0));
-    	animals.add(new Animal("Cat", 2, 0));
-    	animals.add(new Animal("Rat", 1, 0));
+        boolean sameNum = true;
+        animals = new ArrayList<>(); //creates a new temporary arrayList that is not saved to the board or game and only used for this purpose
+        // adds all animals with their respective power(player set to 0 as for this purpose it does not belong to anyone)
+        animals.add(new Animal("Elephant", 8, 0));
+        animals.add(new Animal("Lion", 7, 0));
+        animals.add(new Animal("Tiger", 6, 0));
+        animals.add(new Animal("Leopard", 5, 0));
+        animals.add(new Animal("Wolf", 4, 0));
+        animals.add(new Animal("Dog", 3, 0));
+        animals.add(new Animal("Cat", 2, 0));
+        animals.add(new Animal("Rat", 1, 0));
 
         Collections.shuffle(animals); //Java utility that shuffles the order of the index of each Instance in the ArrayList
         Scanner scanner = new Scanner(System.in); //Initiates a new scanner object(not closed as it is still needed for the actually gameplay)
 
         System.out.println("Each player, pick an animal piece (1-8):"); //Asks user to pick a number
+        revealCards(-1, -1, animals); // Display all cards face down
+
         System.out.print("Player 1, choose a number: ");
         int c1 = scanner.nextInt() - 1; //-1 to associate it with the index and avoid out of bounds
+        revealCards(c1, -1, animals); // Reveal Player 1's choice
+
         int c2 = -1;
         while (sameNum) 
         {
@@ -191,34 +196,48 @@ public class Game {
             } 
             else 
             {
-                System.out.println("Number already chosen try again!");
+                System.out.println("Number already chosen, try again!");
             }
         }
-        
+
+        // Display both players' choices
+        revealCards(c1, c2, animals);
+
         //Gets the animal names using the Animal data type(mainly for display purposes)
         Animal animal1 = animals.get(c1);
         Animal animal2 = animals.get(c2);
-        
+
         //Displays the animal each user picked 
         System.out.println("Player 1 chose: " + animal1.getAnimal());
         System.out.println("Player 2 chose: " + animal2.getAnimal());
-        
+
         //If player1 chose the animal with the higher power
-        if(animals.get(c1).getPower() > animals.get(c2).getPower())
-        {
-        	System.out.println("Player 1 chose the stronger animal and therefore will get the first move");
-        	System.out.println();
-        	System.out.println();
-        	return 1; // returns 1 to signify the currentPlayer is player 1
+        if (animal1.getPower() > animal2.getPower()) {
+            System.out.println("Player 1 chose the stronger animal and therefore will get the first move");
+            return 1; // returns 1 to signify the currentPlayer is player 1
         }
         //If player 2 chose the animal with the higher power
-        else
-        {
-        	System.out.println("Player 2 chose the stronger animal and therefore will get the first move");
-        	System.out.println();
-        	System.out.println();
-        	return 2; // returns 2 to signify the currentPlayer is player 2
+        else {
+            System.out.println("Player 2 chose the stronger animal and therefore will get the first move");
+            return 2; // returns 2 to signify the currentPlayer is player 2
         }
-        
+    }
+
+    private void revealCards(int index1, int index2, ArrayList<Animal> animals) 
+    {
+        String[] cards = {".", ".", ".", ".", ".", ".", ".", "."};
+        if (index1 != -1) 
+        {
+            cards[index1] = animals.get(index1).getAnimal();
+        }
+        if (index2 != -1) 
+        {
+            cards[index2] = animals.get(index2).getAnimal();
+        }
+        for (String card : cards) 
+        {
+            System.out.print(card + " ");
+        }
+        System.out.println();
     }
 }
