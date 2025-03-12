@@ -178,11 +178,22 @@ public class Game {
         Scanner scanner = new Scanner(System.in); //Initiates a new scanner object(not closed as it is still needed for the actually gameplay)
 
         System.out.println("Each player, pick an animal piece (1-8):"); //Asks user to pick a number
-
         System.out.print("Player 1, choose a number: ");
-        int c1 = scanner.nextInt() - 1; //-1 to associate it with the index and avoid out of bounds 
-        System.out.print("Player 2, choose a number: ");
-        int c2 = scanner.nextInt() - 1;
+        int c1 = scanner.nextInt() - 1; //-1 to associate it with the index and avoid out of bounds
+        int c2 = -1;
+        while (sameNum) 
+        {
+            System.out.print("Player 2, choose a number: ");
+            c2 = scanner.nextInt() - 1;
+            if (c2 != c1) 
+            {
+               sameNum = false;
+            } 
+            else 
+            {
+                System.out.println("Number already chosen try again!");
+            }
+        }
         
         //Gets the animal names using the Animal data type(mainly for display purposes)
         Animal animal1 = animals.get(c1);
