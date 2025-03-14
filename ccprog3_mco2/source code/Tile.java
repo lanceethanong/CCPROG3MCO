@@ -42,4 +42,19 @@ public abstract class Tile
 	{
 		return ". ";
 	}
+
+	public String display() 
+	{
+	    if (piece != null) {
+	        return piece.display() + " ";
+	    }
+	    return getDefaultSymbol(); // Restore correct tile symbol
+	}
+
+	public String getDefaultSymbol() 
+	{
+	    if (this instanceof Lake) return "~ ";
+	    if (this instanceof Trap) return ". ";
+	    return ". "; // Default empty tile
+	}
 }
