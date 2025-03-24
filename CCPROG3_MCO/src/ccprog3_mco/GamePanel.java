@@ -66,15 +66,16 @@ public class GamePanel extends JPanel implements Runnable {
         		"Instructions\n" +
         	    "Player 1 controls the top\n" +
         	    "Player 2 controls the bottom.\n" +
-        	    "First to capture the enemy base Wins!\n" +
-        	    "Only rats can cross lake blocks while tigers and lions can jump across\n"
-        	    +"Be careful of traps as it drains your powers\n" 
-        	    +
+        	    "First to capture the enemy base Wins!(Dosent matter how many pieces each player has left)\n" +
+        	    "Only rats can cross lake blocks while tigers and lions can jump across assuming no rat is blocking the path\n"
+        	    +"Be careful of traps as it drains your powers and stuns you for one turn, you can only recover by leaving the trap\n" 
+        	    +"Animals can only capture other animals if they have the same or\n"
+        	    +"higher power(With the exception of Rat and Elephant)\n"+
         	     "Good luck and have fun!"
         	    
         	);
         jklabel2.setForeground(Color.WHITE);
-        jklabel2.setFont(new Font("Calibri", Font.PLAIN, 22));
+        jklabel2.setFont(new Font("Calibri", Font.PLAIN, 17));
         jklabel2.setBackground(new Color(34, 139, 34)); // Match background
         jklabel2.setEditable(false);
         p1Label = new JLabel("Player 1 Name:");
