@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
     MouseMovement mouse = new MouseMovement();
     
     //for the name and picking animal
-    private JPanel nameScreen, animalScreen;
+    private JPanel nameScreen, animalScreen,turnPanel;
     private JTextField player1Field, player2Field;
     private JButton nextButton;
     private List<String> animals;
@@ -241,6 +241,7 @@ public class GamePanel extends JPanel implements Runnable {
         return -1;
     }
     
+
     private void startGame() 
     {
         remove(animalScreen);
@@ -256,11 +257,10 @@ public class GamePanel extends JPanel implements Runnable {
         turnIndicatorBottom.setFont(new Font("Calibri", Font.BOLD, 32));
 
         // Panel for turn indicators
-        JPanel turnPanel = new JPanel();
-        turnPanel.setLayout(new GridLayout(2, 1, 10, 10)); // Two rows, one column
-        turnPanel.setPreferredSize(new Dimension(250, 100)); // Adjust width
+        turnPanel = new JPanel();
+        turnPanel.setLayout(new GridLayout(2, 3, 10, 10)); // 4 rows, stacked vertically
+        turnPanel.setPreferredSize(new Dimension(250, 200)); // Adjust width
         turnPanel.setBackground(Color.BLACK);
-
         // Add labels
        
         turnPanel.add(turnIndicatorTop);
@@ -275,6 +275,7 @@ public class GamePanel extends JPanel implements Runnable {
         {
             turnIndicatorTop.setForeground(Color.BLACK);
             turnIndicatorBottom.setForeground(Color.BLUE);
+            
         }
 
         // Add to the right side of the screen
@@ -339,7 +340,6 @@ public class GamePanel extends JPanel implements Runnable {
                 if (moved) 
                 { 
                     switchTurn(); // Only switch turns if the move was successful
-                    System.out.println("Turn switched. Now it's Player " + currentPlayer + "'s turn.");
                 }
             }
             activeP = null;
@@ -364,12 +364,12 @@ public class GamePanel extends JPanel implements Runnable {
         // Update turn indicators
         if (currentPlayer == 1) 
         {
-            turnIndicatorTop.setForeground(Color.RED);
+        	turnIndicatorTop.setForeground(Color.RED);
             turnIndicatorBottom.setForeground(Color.BLACK);
         } 
         else 
         {
-            turnIndicatorTop.setForeground(Color.BLACK);
+        	turnIndicatorTop.setForeground(Color.BLACK);  
             turnIndicatorBottom.setForeground(Color.BLUE);
         }
     }
