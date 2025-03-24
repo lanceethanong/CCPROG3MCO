@@ -56,31 +56,29 @@ public class Piece {
         //is  trap
         else if(targetTile.getType().equals("Trap"))
         {
-        	if(!ownTile(targetTile))
-        	{
-            if(canMove(targetTile))
-            {                  
-            	JOptionPane.showMessageDialog(null, currentTile.getPiece().getType()+"has stepped on the enemy trap and has their power drained", "Trapped", JOptionPane.WARNING_MESSAGE); //shows an error message
-                 move(targetTile); // Move the piece to the new EmptyTile
-                 this.stun();
-                 
-            }
-        	}
-        	else
-        	{
-        		if(targetTile.getPiece() != null)
-        		{
-        			if(isHigherPower(targetTile))
-        			{
-        				Piece capturedPiece = targetTile.getPiece();
+        	if (!ownTile(targetTile)) 
+            {
+                if (canMove(targetTile)) 
+                {
+
+                    move(targetTile); // Move the piece to the new trap tile
+                    this.stun(); // Stun the piece
+                  JOptionPane.showMessageDialog(null, currentTile.getPiece().getType() + " has stepped on the enemy trap and has their power drained", "Trapped", JOptionPane.WARNING_MESSAGE);
+                }
+            } 
+            else 
+            {
+                if (targetTile.getPiece() != null) 
+                {
+                    if (isHigherPower(targetTile)) {
+                        Piece capturedPiece = targetTile.getPiece();
                         capturedPiece.getPlayer().capturedPiece(capturedPiece); // Remove the captured piece
-        				currentTile.setPiece(this); //deletes piece from the tile
-        		        targetTile.setPiece(null); //puts it in the new tile
-        		        currentTile = currentTile; //update position 
-        			}
-        		}
-        	}
-                             
+                        currentTile.setPiece(this); // Keep the current piece in its position
+                        targetTile.setPiece(null); // Remove the captured piece from the trap
+                        currentTile = currentTile; // Update position (no change)
+                    }
+                }
+            }           
         }
         
         else if (currentTile.getType().equals("Trap") && !targetTile.getType().equals("Trap")) 
@@ -137,8 +135,7 @@ public class Piece {
             if(canMove(targetTile))
             {
                 return true;
-            }
-            
+            }       
             if(ownTile(targetTile))
             {
             	return false;
@@ -318,6 +315,8 @@ public class Piece {
         return false;
     }
     
+  
+ 
     public boolean isRat(){//returns true when its not a rat
         if(currentTile.getPieceName().equals("Rat")){
             return true;
@@ -325,6 +324,7 @@ public class Piece {
         return false;
     }
    
+
     public boolean alongthePath(int preX, int preY, int targetX, int targetY) 
     {
         Board board = currentTile.getBoard(); // Get the board from the current tile

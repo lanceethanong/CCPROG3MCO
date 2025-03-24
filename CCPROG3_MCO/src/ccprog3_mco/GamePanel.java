@@ -303,9 +303,6 @@ public class GamePanel extends JPanel implements Runnable {
                 activeP.moveTo(targetTile);
                 switchTurn();
                 System.out.println("Turn switched. Now it's Player " + currentPlayer + "'s turn.");
-            } 
-            else {
-                System.out.println("Invalid move. Turn remains with Player " + currentPlayer);
             }
             activeP = null;
         }
