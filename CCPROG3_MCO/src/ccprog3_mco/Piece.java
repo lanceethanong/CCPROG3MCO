@@ -37,7 +37,7 @@ public class Piece {
     }
     
     
-    public void moveTo(Tile targetTile) 
+    public boolean moveTo(Tile targetTile) 
     {
         // is base
         if(targetTile.getType().equals("Base"))
@@ -49,8 +49,11 @@ public class Piece {
                 move(targetTile);
                 JOptionPane.showMessageDialog(null, "Player " + this.getPlayer().getPlayerId() + " wins by capturing the enemy base!");
                 System.exit(0); //closes the game
+                return true;
             }
+            return false;
         	}
+        	return false;
  
         }
         //is  trap
@@ -61,23 +64,29 @@ public class Piece {
                 if (canMove(targetTile)) 
                 {
 
-                    move(targetTile); // Move the piece to the new trap tile
-                    this.stun(); // Stun the piece
+                   move(targetTile); // Move the piece to the new trap tile
+                   this.stun(); // Stun the piece
                   JOptionPane.showMessageDialog(null, currentTile.getPiece().getType() + " has stepped on the enemy trap and has their power drained", "Trapped", JOptionPane.WARNING_MESSAGE);
+                  return true;
                 }
+                return false;
             } 
             else 
             {
                 if (targetTile.getPiece() != null) 
                 {
-                    if (isHigherPower(targetTile)) {
+                    if (isHigherPower(targetTile)) 
+                    {
                         Piece capturedPiece = targetTile.getPiece();
                         capturedPiece.getPlayer().capturedPiece(capturedPiece); // Remove the captured piece
                         currentTile.setPiece(this); // Keep the current piece in its position
                         targetTile.setPiece(null); // Remove the captured piece from the trap
                         currentTile = currentTile; // Update position (no change)
+                        return true;
                     }
+                    return false;
                 }
+                return false;
             }           
         }
         
@@ -85,7 +94,7 @@ public class Piece {
         {                          	
             	this.recover(); // Restore the piece's power
                 move(targetTile);
-                            
+                return true;            
         }
         // is lake
         else if(targetTile.getType().equals("Lake"))
@@ -95,11 +104,15 @@ public class Piece {
                 if(canGoToLake(targetTile))
                 {
                     move(targetTile);
-                }else
+                    return true;
+                }
+                else
                 {
-                    JOptionPane.showMessageDialog(null,"Only Rat can cross the Lake");
+                    JOptionPane.showMessageDialog(null,"Only Rat can cross the Lake","Invalid Move",JOptionPane.ERROR_MESSAGE);
+                    return false;
                 }   
             }
+            return false;
             
         //is not an empty tile
         }
@@ -110,14 +123,17 @@ public class Piece {
             	Piece capturedPiece = targetTile.getPiece();
                 capturedPiece.getPlayer().capturedPiece(capturedPiece); // Remove the captured piece
                 move(targetTile);
+                return true;
             }
+            return false;
         }
         // is an empty tile
         else if (targetTile.getPiece() == null && isValidMove(targetTile)) 
         {
             move(targetTile);
+            return true;
         }
-        
+        return false;
      }
     
     public void move(Tile targetTile)

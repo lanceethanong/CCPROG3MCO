@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
     private JButton nextButton;
     private List<String> animals;
     private JButton[] animalButtons;
-    private JLabel p1AnimalLabel, p2AnimalLabel,p1Label,p2Label,jklabel;
+    private JLabel p1AnimalLabel, p2AnimalLabel,p1Label,p2Label,jklabel,turnIndicatorTop, turnIndicatorBottom;
     private JTextArea jklabel2;
     private Piece activeP;
     
@@ -185,14 +185,14 @@ public class GamePanel extends JPanel implements Runnable {
         {
             player1Animal = animals.get(index);
             animalButtons[index].setEnabled(false);
-            JOptionPane.showMessageDialog(this, player1Animal, "Player 1 Picked", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, player1Animal, player1Name+" Picked", JOptionPane.INFORMATION_MESSAGE);
             p1AnimalLabel.setText(player1Name+" : " + player1Animal);
         } 
         else if (player2Animal == null)
         {
             player2Animal = animals.get(index);
             p2AnimalLabel.setText(player2Name+" : " +player2Animal);
-            JOptionPane.showMessageDialog(this, player2Animal, "Player 2 Picked", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, player2Animal, player2Name+" Picked", JOptionPane.INFORMATION_MESSAGE);
             JOptionPane.showMessageDialog(this, determineWinner(), "Battle Result", JOptionPane.INFORMATION_MESSAGE);
             currentPlayer = determineIntWinner();
             remove(animalScreen);
@@ -247,6 +247,39 @@ public class GamePanel extends JPanel implements Runnable {
         revalidate();
         repaint();
         board = new ClassicBoard(player1, player2); 
+
+        // Create turn indicators
+        turnIndicatorTop = new JLabel(player1.getName() + "'s Turn", SwingConstants.CENTER);
+        turnIndicatorBottom = new JLabel(player2.getName() + "'s Turn", SwingConstants.CENTER);
+
+        turnIndicatorTop.setFont(new Font("Calibri", Font.BOLD, 32));
+        turnIndicatorBottom.setFont(new Font("Calibri", Font.BOLD, 32));
+
+        // Panel for turn indicators
+        JPanel turnPanel = new JPanel();
+        turnPanel.setLayout(new GridLayout(2, 1, 10, 10)); // Two rows, one column
+        turnPanel.setPreferredSize(new Dimension(250, 100)); // Adjust width
+        turnPanel.setBackground(Color.BLACK);
+
+        // Add labels
+       
+        turnPanel.add(turnIndicatorTop);
+        turnPanel.add(turnIndicatorBottom);
+        
+        if (currentPlayer == 1) 
+        {
+            turnIndicatorTop.setForeground(Color.RED);
+            turnIndicatorBottom.setForeground(Color.BLACK);
+        } 
+        else 
+        {
+            turnIndicatorTop.setForeground(Color.BLACK);
+            turnIndicatorBottom.setForeground(Color.BLUE);
+        }
+
+        // Add to the right side of the screen
+        add(turnPanel, BorderLayout.EAST);
+
         launchGame();
     }
 
@@ -288,7 +321,8 @@ public class GamePanel extends JPanel implements Runnable {
             int col = mouse.x / Board.SQUARE_SIZE;
             Tile clickedTile = board.getTile(row, col);
 
-            if (activeP == null && clickedTile != null && clickedTile.getPiece() != null && clickedTile.getPiece().getPlayerId() == currentPlayer) {
+            if (activeP == null && clickedTile != null && clickedTile.getPiece() != null 
+                && clickedTile.getPiece().getPlayerId() == currentPlayer) {
                 activeP = clickedTile.getPiece();
             }
         } 
@@ -299,39 +333,44 @@ public class GamePanel extends JPanel implements Runnable {
             Tile targetTile = board.getTile(row, col);
 
             if (targetTile != null && activeP.isValidMove(targetTile)) 
-            { // Ensure valid move
-                activeP.moveTo(targetTile);
-                switchTurn();
-                System.out.println("Turn switched. Now it's Player " + currentPlayer + "'s turn.");
+            { 
+                boolean moved = activeP.moveTo(targetTile); // Store if the move was successful
+
+                if (moved) 
+                { 
+                    switchTurn(); // Only switch turns if the move was successful
+                    System.out.println("Turn switched. Now it's Player " + currentPlayer + "'s turn.");
+                }
             }
             activeP = null;
         }
     }
     
     public void switchTurn() {
-        // Check if the current player has any pieces left
-
-
         if (currentPlayer == 1) {
-            if (player2.hasPiecesLeft()) 
-            {
-                currentPlayer = 2; // Switch to Player 2 if they have pieces left
-            } 
-            else {
-                // Player 2 has no pieces, so Player 1 continues their turn
-                currentPlayer = 1;
+            if (player2.hasPiecesLeft()) {
+                currentPlayer = 2; // Switch to Player 2
+            } else {
+                currentPlayer = 1; // Player 2 has no pieces, Player 1 keeps turn
             }
+        } else if (currentPlayer == 2) {
+            if (player1.hasPiecesLeft()) {
+                currentPlayer = 1; // Switch to Player 1
+            } else {
+                currentPlayer = 2; // Player 1 has no pieces, Player 2 keeps turn
+            }
+        }
+
+        // Update turn indicators
+        if (currentPlayer == 1) 
+        {
+            turnIndicatorTop.setForeground(Color.RED);
+            turnIndicatorBottom.setForeground(Color.BLACK);
         } 
-        else if (currentPlayer == 2) {
-            if (player1.hasPiecesLeft()) 
-            {
-                currentPlayer = 1; // Switch to Player 1 if they have pieces left
-            } 
-            else 
-            {
-                // Player 1 has no pieces, so Player 2 continues their turn
-                currentPlayer = 2;
-            }
+        else 
+        {
+            turnIndicatorTop.setForeground(Color.BLACK);
+            turnIndicatorBottom.setForeground(Color.BLUE);
         }
     }
     
