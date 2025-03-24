@@ -14,11 +14,10 @@ public class Piece {
 	 * player : which player the piece belongs to
 	 * type: Identifier to find out what type of piece it is
 	 */
-    protected int power; 
+    protected int power,originalPower; 
     private Player player;
     protected Tile currentTile,thisTile;
     private boolean stunned = false;
-
     /**
      * Method: Piece
      * Description: Constructor used to initialize new piece Objects
@@ -32,7 +31,7 @@ public class Piece {
         this.currentTile = tile;
         this.player = player;
         this.power = power;
-        
+        this.originalPower = power;
         tile.setPiece(this); 
         player.addPiece(this); 
     }
@@ -61,12 +60,32 @@ public class Piece {
         	{
             if(canMove(targetTile))
             {                  
-                 JOptionPane.showMessageDialog(null,"You have just stepped on the trap");
+            	JOptionPane.showMessageDialog(null, currentTile.getPiece().getType()+"has stepped on the enemy trap and has their power drained", "Trapped", JOptionPane.WARNING_MESSAGE); //shows an error message
                  move(targetTile); // Move the piece to the new EmptyTile
                  this.stun();
+                 
             }
         	}
+        	else
+        	{
+        		if(targetTile.getPiece() != null)
+        		{
+        			if(isHigherPower(targetTile))
+        			{
+        				currentTile.setPiece(this); //deletes piece from the tile
+        		        targetTile.setPiece(null); //puts it in the new tile
+        		        currentTile = currentTile; //update position 
+        			}
+        		}
+        	}
                              
+        }
+        
+        else if (currentTile.getType().equals("Trap") && !targetTile.getType().equals("Trap")) 
+        {                          	
+            	this.recover(); // Restore the piece's power
+                move(targetTile);
+                            
         }
         // is lake
         else if(targetTile.getType().equals("Lake"))
@@ -88,6 +107,8 @@ public class Piece {
         { 
             if(isValidMove(targetTile))
             {
+            	Piece capturedPiece = targetTile.getPiece();
+                capturedPiece.getPlayer().capturedPiece(capturedPiece); // Remove the captured piece
                 move(targetTile);
             }
         }
@@ -96,6 +117,7 @@ public class Piece {
         {
             move(targetTile);
         }
+        
      }
     
     public void move(Tile targetTile)
@@ -156,11 +178,13 @@ public class Piece {
         int currentY = currentTile.getY();
 
         // Check if the piece is stunned
-        if (stunned) {
+        if (stunned) 
+        {
             JOptionPane.showMessageDialog(null, 
                 currentTile.getPiece().getPlayer().getName() + "'s " + currentTile.getPieceName() + " is stunned and thus cannot move",
                 "Invalid Move", 
                 JOptionPane.ERROR_MESSAGE);
+            currentTile.getPiece().stunned = false;
             return false;
         }
 
@@ -191,7 +215,7 @@ public class Piece {
                 }
             }
         }
-
+        
         // Invalid move
         JOptionPane.showMessageDialog(null, "Cannot move in that direction!", "Invalid Move", JOptionPane.ERROR_MESSAGE);
         return false;            
@@ -255,9 +279,16 @@ public class Piece {
             Trap traptile = (Trap) targetTile;
             if(traptile.getPlayer() == this.getPlayerId())
             {
+            	if(traptile.getPiece() == null)
+            	{
             	JOptionPane.showMessageDialog(null, "Cannot step onto your own trap!", "Invalid Move!", JOptionPane.ERROR_MESSAGE); //shows an error message
             	
             	return true;
+            	}
+            	else
+            	{
+            	return true;
+            	}
             }
             else
             return false;
@@ -357,9 +388,11 @@ public class Piece {
         // Check each tile along the path
         int currentX = startX + deltaX;
         int currentY = startY + deltaY;
-        while (currentX != endX || currentY != endY) {
+        while (currentX != endX || currentY != endY) 
+        {
             Tile currentTile = startTile.getBoard().getTile(currentX, currentY);
-            if (currentTile == null || !currentTile.getType().equals("Lake")) {
+            if (currentTile == null || !currentTile.getType().equals("Lake")) 
+            {
                 return false; // Path is not entirely over a lake
             }
             currentX += deltaX;
@@ -394,7 +427,7 @@ public class Piece {
     public void recover() 
     {
         stunned = false;
-        power = getPower(); // Restore original power
+        power = originalPower; // Restore original power
     }
 
     public int getPower() 

@@ -310,17 +310,33 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     
-    public void switchTurn() 
-    {
-        if (currentPlayer == 2) 
-        {        	
-            currentPlayer = 1;
-        }
-        else
-        {
-            currentPlayer = 2;
+    public void switchTurn() {
+        // Check if the current player has any pieces left
+
+
+        if (currentPlayer == 1) {
+            if (player2.hasPiecesLeft()) 
+            {
+                currentPlayer = 2; // Switch to Player 2 if they have pieces left
+            } 
+            else {
+                // Player 2 has no pieces, so Player 1 continues their turn
+                currentPlayer = 1;
+            }
+        } 
+        else if (currentPlayer == 2) {
+            if (player1.hasPiecesLeft()) 
+            {
+                currentPlayer = 1; // Switch to Player 1 if they have pieces left
+            } 
+            else 
+            {
+                // Player 1 has no pieces, so Player 2 continues their turn
+                currentPlayer = 2;
+            }
         }
     }
+    
 
 //    private void simulate() 
 //    {
