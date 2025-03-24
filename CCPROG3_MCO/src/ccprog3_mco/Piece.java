@@ -72,6 +72,8 @@ public class Piece {
         		{
         			if(isHigherPower(targetTile))
         			{
+        				Piece capturedPiece = targetTile.getPiece();
+                        capturedPiece.getPlayer().capturedPiece(capturedPiece); // Remove the captured piece
         				currentTile.setPiece(this); //deletes piece from the tile
         		        targetTile.setPiece(null); //puts it in the new tile
         		        currentTile = currentTile; //update position 
