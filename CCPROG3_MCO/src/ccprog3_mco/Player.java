@@ -59,21 +59,21 @@ public class Player {
     	}
     }
 
-    // Display the player's pieces
-    public void displayPieces() 
-    {
-    	if(name == null)
-    	{
-        System.out.println("Player"+number+"'s Pieces:");
-    	}
-    	else
-    	{
-    	System.out.println(name+"'s Pieces:");	
-    	}
-        for (Piece piece : pieces) 
-        {
-            System.out.println(piece.display());
-        }
-    }
+//    // Display the player's pieces
+//    public void displayPieces() 
+//    {
+//    	if(name == null)
+//    	{
+//        System.out.println("Player"+number+"'s Pieces:");
+//    	}
+//    	else
+//    	{
+//    	System.out.println(name+"'s Pieces:");	
+//    	}
+//        for (Piece piece : pieces) 
+//        {
+//            System.out.println(piece.display());
+//        }
+//    }
     
 }
