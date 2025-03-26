@@ -1,28 +1,29 @@
 package ccprog3_mco;
 
-import javax.swing.JOptionPane;
+import javax.swing.JOptionPane; //To alert of any error messages
 
 /**
- * Class: Piece
- * Description: Main class responsible for handling the parameters of the pieces to be used in the game(Animals,Lake Blocks,Traps(to be implemented) and Bases) 
- * @author Lance Ethan S. Ong S14
+ * Class: Piece 
+ * Description: Main class used for initializing the pieces on the board along with handling their own movement conditions when encountering events like(obstacles,capture and win conditions)
+ * @author Lance Ethan S. Ong  & Nick Jenson Crescini S14
  * 
  */
 public class Piece {
 	/* parameters of Piece
 	 * power : level of each block
+	 * originalPower : copies the power of the piece(used to restore power once the piece leaves the trap)
 	 * player : which player the piece belongs to
-	 * type: Identifier to find out what type of piece it is
+	 * currentTile : which tile the piece is currently at
 	 */
-    protected int power,originalPower; 
-    private Player player;
-    protected Tile currentTile,thisTile;
+    protected int power,originalPower; // protected in order for subclasses to be able to access the power
+    private Player player; //Player type used to access methods in player
+    protected Tile currentTile; //Tile type used to access methods in tile
     /**
      * Method: Piece
      * Description: Constructor used to initialize new piece Objects
-     * @param power: integer to initialize powerlevel
+     * @param tile: used to initialize which tile the piece starts
      * @param player: integer to initialize which player it belongs to
-     * @param type: String identifier             
+     * @param power: used to initialize the pieces power         
      * @author Lance Ethan S. Ong S14
      * 
      */
@@ -31,14 +32,21 @@ public class Piece {
         this.player = player;
         this.power = power;
         this.originalPower = power;
-        tile.setPiece(this); 
-        player.addPiece(this); 
+        tile.setPiece(this); // adds the piece to the tile 
+        player.addPiece(this); // adds it to the list of pieces each player has
     }
     
-    
+    /**
+     * Method: moveTo
+     * Description: main method used to handle the movement conditions of the pieces(other conditions are stacked onto each other ensuring each move is valid)
+     * @param targetTile : stored data of the targetTile
+     * @return boolean : true or false       
+     * @author Lance Ethan S. Ong  & Nick Jenson Crescini S14
+     * 
+     */ 
     public boolean moveTo(Tile targetTile) 
     {
-        // is base
+        // If the targetTile is a base
         if(targetTile instanceof Base)
         {
         	if(!ownTile(targetTile))
@@ -438,7 +446,5 @@ public class Piece {
     {
     	return player.getPlayerId();
     }
-    
-   
 
 }

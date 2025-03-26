@@ -12,6 +12,5 @@ public class Lion extends Piece implements Hopper
     {
         return "L"+getPlayerId()+" "; 
     }
-    
-    
+       
 }
