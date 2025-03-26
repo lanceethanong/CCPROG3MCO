@@ -184,21 +184,34 @@ public class GamePanel extends JPanel implements Runnable {
         if (player1Animal == null)
         {
             player1Animal = animals.get(index);
-            animalButtons[index].setEnabled(false);
-            JOptionPane.showMessageDialog(this, player1Animal, player1Name+" Picked", JOptionPane.INFORMATION_MESSAGE);
-            p1AnimalLabel.setText(player1Name+" : " + player1Animal);
+            animalButtons[index].setEnabled(false);  // Disable selected button
+            JOptionPane.showMessageDialog(this, player1Animal, player1Name + " Picked", JOptionPane.INFORMATION_MESSAGE);
+            p1AnimalLabel.setText(player1Name + " : " + player1Animal);
         } 
         else if (player2Animal == null)
         {
             player2Animal = animals.get(index);
-            p2AnimalLabel.setText(player2Name+" : " +player2Animal);
-            JOptionPane.showMessageDialog(this, player2Animal, player2Name+" Picked", JOptionPane.INFORMATION_MESSAGE);
+            p2AnimalLabel.setText(player2Name + " : " + player2Animal);
+            JOptionPane.showMessageDialog(this, player2Animal, player2Name + " Picked", JOptionPane.INFORMATION_MESSAGE);
+            //show animal after
+            for (int i = 0; i < animalButtons.length; i++) {
+                animalButtons[i].setText(animals.get(i));  
+                animalButtons[i].setEnabled(false);  
+            }
+            
             JOptionPane.showMessageDialog(this, determineWinner(), "Battle Result", JOptionPane.INFORMATION_MESSAGE);
             currentPlayer = determineIntWinner();
+            
+            
+
+            // Proceed to the main game
             remove(animalScreen);
             startGame();
         }
     }
+
+
+        
     
     private String determineWinner() 
     {
@@ -407,7 +420,7 @@ public class GamePanel extends JPanel implements Runnable {
         String pieceType = piece.getType().toLowerCase();
         int playerID = piece.getPlayerId();
 
-        String imagePath = "src/main/Pictures/" + pieceType + playerID +".png";
+        String imagePath = "src/Pictures/" + pieceType + playerID +".png";
         try {
             Image pieceImage = ImageIO.read(new File(imagePath));
             int pieceSize = Board.SQUARE_SIZE - 10; // Slightly smaller than tile

@@ -46,7 +46,7 @@ public abstract class Board {
                 if (tileType.equals("~ ")) {
                     g.setColor(Color.CYAN); // Lake
                 } else if (tileType.startsWith("P")) {
-                    g.setColor(Color.GREEN); // Base
+                    g.setColor(Color.BLUE); // Base
                 } else if (tileType.equals("# ")) {
                     g.setColor(Color.RED); // Trap
                 } else {
@@ -60,6 +60,14 @@ public abstract class Board {
                 g.setColor(Color.BLACK);
                 g.drawRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
 
+                // Draw P1 or P2 on the base
+                if (tileType.startsWith("P")) {
+                    int playerId = tileType.equals("P1") ? 1 : 2;
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("Arial", Font.BOLD, 18));
+                    g.drawString("P" + playerId, x + SQUARE_SIZE / 4, y + SQUARE_SIZE / 2);
+                }
+
                 if (board[row][col].getPiece() != null) {
                     Piece piece = board[row][col].getPiece();
                     drawPiece(g, piece, x, y, SQUARE_SIZE, SQUARE_SIZE);
@@ -72,11 +80,10 @@ public abstract class Board {
         String pieceType = piece.getType().toLowerCase();
         int playerId = piece.getPlayerId();
         
-        String imagePath = "src/Pict/" + pieceType + playerId +".png";
+        String imagePath = "src/Pict/" + pieceType + playerId + ".png";
         try {
             File imageFile = new File(imagePath);
             if (!imageFile.exists()) throw new IOException("Image not found: " + imagePath);
-
             Image pieceImage = ImageIO.read(imageFile);
             g.drawImage(pieceImage, x + 5, y + 5, width - 10, height - 10, null);
         } catch (IOException | NullPointerException e) {
@@ -85,5 +92,4 @@ public abstract class Board {
             g.drawString(pieceType.charAt(0) + String.valueOf(playerId), x + width / 4, y + height / 2);
         }
     }
-    
 }

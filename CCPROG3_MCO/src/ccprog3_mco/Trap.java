@@ -13,12 +13,6 @@ public class Trap extends Tile
     {
         return this.player;
     }
-    
-    public void activateTrap(Piece piece) 
-    {
-        piece.stun();
-    }
-    
     public String display() 
     {
         return "# "; 

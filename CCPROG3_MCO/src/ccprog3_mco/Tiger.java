@@ -1,6 +1,6 @@
 package ccprog3_mco;
 
-public class Tiger extends Piece
+public class Tiger extends Piece implements Hopper
 {
 	public Tiger(Tile tile, Player player) 
 	{

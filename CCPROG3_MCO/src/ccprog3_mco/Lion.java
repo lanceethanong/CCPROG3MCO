@@ -1,6 +1,6 @@
 package ccprog3_mco;
 
-public class Lion extends Piece
+public class Lion extends Piece implements Hopper
 {
 	public Lion(Tile tile, Player player) 
 	{
@@ -12,4 +12,6 @@ public class Lion extends Piece
     {
         return "L"+getPlayerId()+" "; 
     }
+    
+    
 }

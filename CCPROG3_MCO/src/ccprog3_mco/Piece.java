@@ -17,7 +17,6 @@ public class Piece {
     protected int power,originalPower; 
     private Player player;
     protected Tile currentTile,thisTile;
-    private boolean stunned = false;
     /**
      * Method: Piece
      * Description: Constructor used to initialize new piece Objects
@@ -40,7 +39,7 @@ public class Piece {
     public boolean moveTo(Tile targetTile) 
     {
         // is base
-        if(targetTile.getType().equals("Base"))
+        if(targetTile instanceof Base)
         {
         	if(!ownTile(targetTile))
         	{
@@ -57,7 +56,7 @@ public class Piece {
  
         }
         //is  trap
-        else if(targetTile.getType().equals("Trap"))
+        else if(targetTile instanceof Trap)
         {
         	if (!ownTile(targetTile)) 
             {
@@ -90,20 +89,20 @@ public class Piece {
             }           
         }
         
-        else if (currentTile.getType().equals("Trap") && !targetTile.getType().equals("Trap")) 
+        else if (currentTile instanceof Trap && !(targetTile instanceof Trap)) 
         {                          	
             	this.recover(); // Restore the piece's power
                 move(targetTile);
                 return true;            
         }
         // is lake
-        else if(targetTile.getType().equals("Lake"))
+        else if(targetTile instanceof Lake)
         {
             if(canMove(targetTile))
             {
-                if(canGoToLake(targetTile))
+                if(this instanceof Swimmer)
                 {
-                    move(targetTile);
+                	((Swimmer)this).swim(targetTile);
                     return true;
                 }
                 else
@@ -116,6 +115,7 @@ public class Piece {
             
         //is not an empty tile
         }
+
         else if(targetTile.getPiece() != null)
         { 
             if(isValidMove(targetTile))
@@ -169,7 +169,7 @@ public class Piece {
             {            	
                 if(canMove(targetTile))
                 {
-                    if(currentTile.getType().equals("Lake") && !isRat())
+                    if(currentTile instanceof Lake && this instanceof Swimmer)
                     {            	
                     	JOptionPane.showMessageDialog(null, "Rat cannot capture any pieces outside the lake while inside the lake!", "Invalid Move", JOptionPane.ERROR_MESSAGE); //shows an error message
                         return false;
@@ -186,22 +186,14 @@ public class Piece {
     }
     
     
-    public boolean canMove(Tile targetTile) {
+    public boolean canMove(Tile targetTile) 
+    {
         int targetX = targetTile.getX();
         int targetY = targetTile.getY();
         int currentX = currentTile.getX();
         int currentY = currentTile.getY();
 
         // Check if the piece is stunned
-        if (stunned) 
-        {
-            JOptionPane.showMessageDialog(null, 
-                currentTile.getPiece().getPlayer().getName() + "'s " + currentTile.getPieceName() + " is stunned and thus cannot move",
-                "Invalid Move", 
-                JOptionPane.ERROR_MESSAGE);
-            currentTile.getPiece().stunned = false;
-            return false;
-        }
 
         // Standard movement logic: move 1 tile horizontally or vertically
         if ((Math.abs(targetX - currentX) + Math.abs(targetY - currentY)) == 1) 
@@ -210,20 +202,25 @@ public class Piece {
         }
 
         // Special case: Tiger and Lion hopping over lakes
-        if ((this.getType().equals("Tiger") || this.getType().equals("Lion"))) 
+        if (this instanceof Hopper) 
         {
             // Check if the movement is in a straight line (horizontal or vertical)
-            if (currentX == targetX || currentY == targetY) {
+            if (currentX == targetX || currentY == targetY) 
+            {
                 // Check if the path is entirely over lake tiles
-                if (isPathOverLake(currentTile, targetTile)) {
+                if (isPathOverLake(currentTile, targetTile)) 
+                {
                     // Check if there is a Rat blocking the path on lake tiles
-                    if (alongthePath(currentX, currentY, targetX, targetY)) {
+                    if (alongthePath(currentX, currentY, targetX, targetY)) 
+                    {
                         return true; // Allow the hop over lakes
-                    } else {
+                    } else 
+                    {
                         JOptionPane.showMessageDialog(null, "A Rat is blocking the path!", "Invalid Move", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
-                } else {
+                } 
+                else {
                     // Tigers and Lions cannot move more than 1 tile unless crossing a lake
                     JOptionPane.showMessageDialog(null, "Cannot move in that direction!(Unless hopping across the lake)", "Invalid Move", JOptionPane.ERROR_MESSAGE);
                     return false;
@@ -321,25 +318,7 @@ public class Piece {
         }
         return false;
     }
-    
-    public boolean canGoToLake(Tile targetTile) 
-    {
-        if (targetTile.getType().equals("Lake") && isRat()) {
-            return true; // Rats can enter lakes
-        }
-
-        return false;
-    }
-    
   
- 
-    public boolean isRat(){//returns true when its not a rat
-        if(currentTile.getPieceName().equals("Rat")){
-            return true;
-        }
-        return false;
-    }
-   
 
     public boolean alongthePath(int preX, int preY, int targetX, int targetY) 
     {
@@ -349,7 +328,7 @@ public class Piece {
         if (preX > targetX && preY == targetY) {
             for (int x = preX - 1; x > targetX; x--) {
                 Tile intermediateTile = board.getTile(x, preY); // Get the tile on the path
-                if (intermediateTile != null && intermediateTile.getType().equals("Lake") && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
+                if (intermediateTile != null && intermediateTile instanceof Lake && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
                     // Path is blocked by a Rat on a lake tile
                     return false;
                 }
@@ -360,7 +339,7 @@ public class Piece {
         if (preX < targetX && preY == targetY) {
             for (int x = preX + 1; x < targetX; x++) {
                 Tile intermediateTile = board.getTile(x, preY); // Get the tile on the path
-                if (intermediateTile != null && intermediateTile.getType().equals("Lake") && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
+                if (intermediateTile != null && intermediateTile instanceof Lake && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
                     // Path is blocked by a Rat on a lake tile
                     return false;
                 }
@@ -371,7 +350,7 @@ public class Piece {
         if (preY > targetY && preX == targetX) {
             for (int y = preY - 1; y > targetY; y--) {
                 Tile intermediateTile = board.getTile(preX, y); // Get the tile on the path
-                if (intermediateTile != null && intermediateTile.getType().equals("Lake") && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
+                if (intermediateTile != null && intermediateTile instanceof Lake && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
                     // Path is blocked by a Rat on a lake tile
                     return false;
                 }
@@ -382,7 +361,7 @@ public class Piece {
         if (preY < targetY && preX == targetX) {
             for (int y = preY + 1; y < targetY; y++) {
                 Tile intermediateTile = board.getTile(preX, y); // Get the tile on the path
-                if (intermediateTile != null && intermediateTile.getType().equals("Lake") && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
+                if (intermediateTile != null && intermediateTile instanceof Lake && intermediateTile.getPiece() != null && intermediateTile.getPiece().getType().equals("Rat")) {
                     // Path is blocked by a Rat on a lake tile
                     return false;
                 }
@@ -393,7 +372,8 @@ public class Piece {
         return true;
     }
     
-    public boolean isPathOverLake(Tile startTile, Tile endTile) {
+    public boolean isPathOverLake(Tile startTile, Tile endTile) 
+    {
         int startX = startTile.getX();
         int startY = startTile.getY();
         int endX = endTile.getX();
@@ -424,8 +404,6 @@ public class Piece {
     {
         return this.getClass().getSimpleName(); // Returns the class name (e.g., "Soldier", "General")
     }
-    
-    
     public String display() 
     {
         return "?";
@@ -433,7 +411,6 @@ public class Piece {
 
     public void stun() 
     {
-        stunned = true;
         power = 0; // Power is temporarily set to 0
     }
     
@@ -444,7 +421,6 @@ public class Piece {
     
     public void recover() 
     {
-        stunned = false;
         power = originalPower; // Restore original power
     }
 

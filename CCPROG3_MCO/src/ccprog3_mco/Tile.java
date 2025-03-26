@@ -28,10 +28,6 @@ public abstract class Tile
 		return piece;
 	}
         
-        public String getPieceName(){
-            return piece.getClass().getSimpleName();
-        }
-	
 	public int getX()
 	{
 		return x;
