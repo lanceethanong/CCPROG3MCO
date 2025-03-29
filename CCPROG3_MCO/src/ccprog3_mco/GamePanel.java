@@ -17,7 +17,8 @@ public class GamePanel extends JPanel implements Runnable {
     final int FPS = 300;
     Thread gameThread;
     
-    private Board board;
+    private Board boardModel;
+    private BoardView boardView;
     private String player1Name, player2Name;
     private String player1Animal, player2Animal;
     private Player player1;
@@ -35,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
     private JLabel p1AnimalLabel, p2AnimalLabel,p1Label,p2Label,jklabel,turnIndicatorTop, turnIndicatorBottom;
     private JTextArea jklabel2;
     private Piece activeP;
-    
+    private BoardController boardController;  // Changed from Board to BoardController
     private final String[] animalRanks = {"Elephant", "Lion", "Tiger", "Leopard", "Wolf", "Dog", "Cat", "Rat"};
     
     public GamePanel() 
@@ -260,7 +261,9 @@ public class GamePanel extends JPanel implements Runnable {
         remove(animalScreen);
         revalidate();
         repaint();
-        board = new ClassicBoard(player1, player2); 
+        boardModel = new ClassicBoard(player1, player2);
+        boardView = new BoardView(boardModel);
+        boardController = new BoardController(boardModel, boardView); 
 
         // Create turn indicators
         turnIndicatorTop = new JLabel(player1.getName() + "'s Turn", SwingConstants.CENTER);
@@ -324,38 +327,27 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     
-    private void update() 
-    {
-        if (player1 == null || player2 == null) {
-            return;
-        }
-
-        if (mouse.mousePressed) {  // Dragging
+    private void update() {
+        if (mouse.mousePressed) {
             int row = mouse.y / Board.SQUARE_SIZE;
             int col = mouse.x / Board.SQUARE_SIZE;
-            Tile clickedTile = board.getTile(row, col);
+            Tile clickedTile = boardController.getTile(row, col);
 
-            if (activeP == null && clickedTile != null && clickedTile.getPiece() != null 
-                && clickedTile.getPiece().getPlayerId() == currentPlayer) {
-                activeP = clickedTile.getPiece();
+            if (boardController.getActivePiece() == null && 
+                clickedTile != null && 
+                clickedTile.getPiece() != null && 
+                clickedTile.getPiece().getPlayerId() == currentPlayer) {
+                
+                boardController.setActivePiece(clickedTile.getPiece());
             }
         } 
-        else if (activeP != null) 
-        { // When mouse is released, move piece
+        else if (boardController.getActivePiece() != null) {
             int row = mouse.y / Board.SQUARE_SIZE;
             int col = mouse.x / Board.SQUARE_SIZE;
-            Tile targetTile = board.getTile(row, col);
-
-            if (targetTile != null && activeP.isValidMove(targetTile)) 
-            { 
-                boolean moved = activeP.moveTo(targetTile); // Store if the move was successful
-
-                if (moved) 
-                { 
-                    switchTurn(); // Only switch turns if the move was successful
-                }
+            
+            if (boardController.tryMovePiece(row, col,currentPlayer)) {
+                switchTurn();
             }
-            activeP = null;
         }
     }
     
@@ -406,16 +398,20 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (board != null) {
+        if (boardController != null) {
             Graphics2D g2 = (Graphics2D) g;
-            board.displayBoard(g2);
+            boardController.displayBoard(g2);
 
-            // Draw dragged piece at cursor position
-            if (activeP != null) {
+            // Draw dragged piece at cursor position(just for better looking movements)
+             activeP = boardController.getActivePiece();
+            if (activeP != null) 
+            {
                 drawPieceAtCursor(g2, activeP, mouse.x, mouse.y);
             }
         }
     }
+    
+    
     private void drawPieceAtCursor(Graphics2D g2, Piece piece, int x, int y) {
         String pieceType = piece.getType().toLowerCase();
         int playerID = piece.getPlayerId();

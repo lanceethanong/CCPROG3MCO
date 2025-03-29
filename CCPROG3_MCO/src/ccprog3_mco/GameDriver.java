@@ -23,7 +23,6 @@ public class GameDriver {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         
-        gp.launchGame();
         /*
         Game game = new Game();
         game.startGame();
