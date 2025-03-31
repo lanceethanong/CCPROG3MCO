@@ -51,6 +51,7 @@ public class BoardView {
         }
     }
 
+    
     private void initiatePiece(Graphics2D g, Piece piece, int x, int y) {
         String pieceType = piece.getType().toLowerCase();
         int playerId = piece.getPlayerId();

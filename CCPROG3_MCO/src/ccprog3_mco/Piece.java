@@ -1,5 +1,6 @@
 package ccprog3_mco;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane; //To alert of any error messages
 
 /**
@@ -46,11 +47,25 @@ public class Piece {
      */ 
     public boolean moveTo(Tile targetTile) {
     // If the targetTile is a base
-    if(targetTile instanceof Base) {
-        if(!ownTile(targetTile)) {
-            if(canMove(targetTile)) {           	
+    if(targetTile instanceof Base) 
+    {
+        if(!ownTile(targetTile)) 
+        {
+            if(canMove(targetTile)) 
+            {            	
                 move(targetTile);
-                JOptionPane.showMessageDialog(null, this.getPlayer().getName() + " has captured the enemy base and wins the game!","Winner",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, this.getPlayer().getName() + " has captured the enemy base and is declared the winner!","Winner",JOptionPane.INFORMATION_MESSAGE);
+                
+                ImageIcon trophyIcon = new ImageIcon("src/Pictures/congratulations.jpg"); // Replace with your icon
+                
+                JOptionPane.showMessageDialog
+                (
+                    null, 
+                    "Congratulations "+this.getPlayer().getName() +" on winning the game and Thank You for Playing!\n",
+                    "Game Over",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    trophyIcon 
+                );                
                 System.exit(0); //closes the game
                 return true;
             }
