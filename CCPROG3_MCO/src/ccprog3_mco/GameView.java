@@ -11,7 +11,8 @@ public class GameView extends JPanel {
     private GameModel model;
     private GameController controller;
     private BoardView boardView;
-//    private BoardController boardController;
+    private BoardController boardController;
+    private Board board;
     // UI components
     private JPanel nameScreen, animalScreen, turnPanel;
     private JTextField player1Field, player2Field;
@@ -172,12 +173,14 @@ public class GameView extends JPanel {
                 super.paintComponent(g);
                 if (model.getBoard() != null) 
                 {
-                    boardView = new BoardView(model.getBoard());
-//                    boardController = new BoardController(model.getBoard(), boardView);
+                	board = model.getBoard();
+                    boardView = new BoardView(board);
+                    boardController = new BoardController(board, boardView);
                     boardView.displayBoard((Graphics2D) g);
                     // Draw active piece if being dragged
-                    if (model.getActivePiece() != null) {
-                        drawPieceAtCursor((Graphics2D) g, model.getActivePiece(), 
+                    if (boardController.getActivePiece() != null) 
+                    {
+                        drawPieceAtCursor((Graphics2D) g, boardController.getActivePiece(), 
                                         controller.getMouseX(), controller.getMouseY());
                     }
                 }

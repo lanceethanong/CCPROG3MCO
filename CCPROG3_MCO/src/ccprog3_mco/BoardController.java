@@ -11,7 +11,8 @@ public class BoardController {
         this.view = view;
     }
     
-    public boolean isGameOver() {
+    public boolean isGameOver() 
+    {
         return model.isGameOver();
     }
     
@@ -23,11 +24,13 @@ public class BoardController {
         this.activePiece = piece;
     }
     
-    public Piece getActivePiece() {
+    public Piece getActivePiece() 
+    {
         return activePiece;
     }
     
-    public boolean tryMovePiece(int row, int col, int currentPlayer) {
+    public boolean tryMovePiece(int row, int col, int currentPlayer) 
+    {
         if (activePiece == null) return false;        
         Tile targetTile = model.getTile(row, col);
         if (targetTile == null) return false;

@@ -101,7 +101,8 @@ public class GameModel {
         this.activePiece = piece;
     }
     
-    public boolean tryMovePiece(int row, int col) {
+    public boolean tryMovePiece(int row, int col) 
+    {
         if (activePiece == null) return false;
         
         Tile targetTile = board.getTile(row, col);
