@@ -50,7 +50,7 @@ public class Piece {
         if(!ownTile(targetTile)) {
             if(canMove(targetTile)) {           	
                 move(targetTile);
-                JOptionPane.showMessageDialog(null, "Player " + this.getPlayer().getPlayerId() + " wins by capturing the enemy base!");
+                JOptionPane.showMessageDialog(null, this.getPlayer().getName() + " has captured the enemy base and wins the game!","Winner",JOptionPane.INFORMATION_MESSAGE);
                 System.exit(0); //closes the game
                 return true;
             }
