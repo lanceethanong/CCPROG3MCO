@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements Runnable {
     
     private Board boardModel;
     private BoardView boardView;
+    
     private String player1Name, player2Name;
     private String player1Animal, player2Animal;
     private Player player1;

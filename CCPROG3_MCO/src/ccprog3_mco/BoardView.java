@@ -55,7 +55,7 @@ public class BoardView {
         String pieceType = piece.getType().toLowerCase();
         int playerId = piece.getPlayerId();
         
-        String imagePath = "src/Pictu/" + pieceType + playerId + ".png";
+        String imagePath = "src/Picture/" + pieceType + playerId + ".png";
         try {
             File imageFile = new File(imagePath);
             Image pieceImage = ImageIO.read(imageFile);
