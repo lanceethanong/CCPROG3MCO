@@ -44,105 +44,91 @@ public class Piece {
      * @author Lance Ethan S. Ong  & Nick Jenson Crescini S14
      * 
      */ 
-    public boolean moveTo(Tile targetTile) 
-    {
-        // If the targetTile is a base
-        if(targetTile instanceof Base)
-        {
-        	if(!ownTile(targetTile))
-        	{
-            if(canMove(targetTile))
-            {           	
+    public boolean moveTo(Tile targetTile) {
+    // If the targetTile is a base
+    if(targetTile instanceof Base) {
+        if(!ownTile(targetTile)) {
+            if(canMove(targetTile)) {           	
                 move(targetTile);
                 JOptionPane.showMessageDialog(null, "Player " + this.getPlayer().getPlayerId() + " wins by capturing the enemy base!");
                 System.exit(0); //closes the game
                 return true;
             }
             return false;
-        	}
-        	return false;
- 
         }
-        //is  trap
-        else if(targetTile instanceof Trap)
+        return false;
+    }
+    // If the targetTile is a trap
+    else if(targetTile instanceof Trap) {
+    	
+    	
+        if (!ownTile(targetTile)) 
         {
-        	if (!ownTile(targetTile)) 
+            // Enemy trap - stun the piece
+            if (canMove(targetTile)) 
             {
-                if (canMove(targetTile)) 
-                {
-
-                   move(targetTile); // Move the piece to the new trap tile
-                   this.stun(); // Stun the piece
-                  JOptionPane.showMessageDialog(null, currentTile.getPiece().getType() + " has stepped on the enemy trap and has their power drained", "Trapped", JOptionPane.WARNING_MESSAGE);
-                  return true;
-                }
-                return false;
-            } 
-            else 
-            {
-                if (targetTile.getPiece() != null) 
-                {
-                    if (isHigherPower(targetTile)) 
-                    {
-                        Piece capturedPiece = targetTile.getPiece();
-                        capturedPiece.getPlayer().capturedPiece(capturedPiece); // Remove the captured piece
-                        currentTile.setPiece(this); // Keep the current piece in its position
-                        targetTile.setPiece(null); // Remove the captured piece from the trap
-                        currentTile = currentTile; // Update position (no change)
-                        return true;
-                    }
-                    return false;
-                }
-                return false;
-            }           
-        }
-        
-        else if (currentTile instanceof Trap && !(targetTile instanceof Trap)) 
-        {                          	
-            	this.recover(); // Restore the piece's power
                 move(targetTile);
-                return true;            
-        }
-        // is lake
-        else if(targetTile instanceof Lake)
-        {
-            if(canMove(targetTile))
+                this.stun();
+                JOptionPane.showMessageDialog(null, currentTile.getPiece().getType() + " has stepped on the enemy trap and has their power drained", "Trapped", JOptionPane.WARNING_MESSAGE);
+                return true;
+            }
+            return false;
+        } else {
+            // Own trap - no stun effect
+            if (targetTile.getPiece() != null) 
             {
-                if(this instanceof Swimmer)
-                {
-                	((Swimmer)this).swim(targetTile);
+                if (isHigherPower(targetTile)) {
+                    Piece capturedPiece = targetTile.getPiece();
+                    capturedPiece.getPlayer().capturedPiece(capturedPiece);
+                    move(targetTile);
                     return true;
                 }
-                else
-                {
+                return false;
+            }
+            // Moving to empty own trap
+            if (canMove(targetTile)) {
+                move(targetTile);
+                return true;
+            }
+            return false;
+        }           
+    }
+        else if (currentTile instanceof Trap && !(targetTile instanceof Trap)) {                          	
+            this.recover(); // Restore the piece's power
+            move(targetTile);
+            return true;            
+        }
+        // If the targetTile is a lake
+        else if(targetTile instanceof Lake) {
+            if(canMove(targetTile)) {
+                if(this instanceof Swimmer) {
+                    ((Swimmer)this).swim(targetTile);
+                    return true;
+                }
+                else {
                     JOptionPane.showMessageDialog(null,"Only Rat can cross the Lake","Invalid Move",JOptionPane.ERROR_MESSAGE);
                     return false;
                 }   
             }
             return false;
-            
-        //is not an empty tile
         }
-
-        else if(targetTile.getPiece() != null)
-        { 
-            if(isValidMove(targetTile))
-            {
-            	Piece capturedPiece = targetTile.getPiece();
-                capturedPiece.getPlayer().capturedPiece(capturedPiece); // Remove the captured piece
+    // If the targetTile has a piece
+        else if(targetTile.getPiece() != null) { 
+            if(isValidMove(targetTile)) {
+                Piece capturedPiece = targetTile.getPiece();
+                capturedPiece.getPlayer().capturedPiece(capturedPiece);
                 move(targetTile);
                 return true;
             }
             return false;
         }
-        // is an empty tile
-        else if (targetTile.getPiece() == null && isValidMove(targetTile)) 
-        {
+        // If the targetTile is empty
+        else if (targetTile.getPiece() == null && isValidMove(targetTile)) {
             move(targetTile);
             return true;
         }
         return false;
-     }
+    }
     
     public void move(Tile targetTile)
     {
@@ -299,16 +285,7 @@ public class Piece {
             Trap traptile = (Trap) targetTile;
             if(traptile.getPlayer() == this.getPlayerId())
             {
-            	if(traptile.getPiece() == null)
-            	{
-            	JOptionPane.showMessageDialog(null, "Cannot step onto your own trap!", "Invalid Move!", JOptionPane.ERROR_MESSAGE); //shows an error message
-            	
-            	return true;
-            	}
-            	else
-            	{
-            	return true;
-            	}
+                return true;
             }
             else
             return false;

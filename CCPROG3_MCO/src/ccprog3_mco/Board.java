@@ -1,7 +1,8 @@
+// BoardModel.java (extracted from Board.java)
 package ccprog3_mco;
 
 public abstract class Board {
-	private String boardName;
+    private String boardName;
     protected Tile[][] board;
     private Player player1;
     private Player player2;
@@ -10,9 +11,9 @@ public abstract class Board {
     
     public Board(String name, Player player1, Player player2) {
         this.boardName = name;
-        board = new Tile[getX()][getY()]; 
         this.player1 = player1;
         this.player2 = player2;
+        this.board = new Tile[getX()][getY()]; // Initialize the board array
         initializeTiles();
         initializePieces(player1, player2);
     }
