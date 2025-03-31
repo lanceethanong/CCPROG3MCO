@@ -253,18 +253,21 @@ public class GameView extends JPanel {
             Graphics2D g2 = (Graphics2D) g;
             model.getBoard().getBoard();
             
-            if (model.getActivePiece() != null) {
+            if (model.getActivePiece() != null) 
+            {
                 drawPieceAtCursor(g2, model.getActivePiece(), controller.getMouseX(), controller.getMouseY());
             }
         }
     }
     
-    private void drawPieceAtCursor(Graphics2D g2, Piece piece, int x, int y) {
+    private void drawPieceAtCursor(Graphics2D g2, Piece piece, int x, int y) 
+    {
         String pieceType = piece.getType().toLowerCase();
         int playerID = piece.getPlayerId();
         
         String imagePath = "src/Pictures/" + pieceType + playerID + ".png";
-        try {
+        try 
+        {
             Image pieceImage = ImageIO.read(new File(imagePath));
             int pieceSize = Board.SQUARE_SIZE - 10;
             g2.drawImage(pieceImage, x - pieceSize / 2, y - pieceSize / 2, pieceSize, pieceSize, null);

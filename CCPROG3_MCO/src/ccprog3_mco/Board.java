@@ -25,29 +25,12 @@ public abstract class Board {
         this.boardName = name;
     }
     
-    public abstract Tile getTile(int x, int y);
-    public abstract void initializeTiles();
-    public abstract void initializePieces(Player player1, Player player2);
-    public abstract int getX();
-    public abstract int getY();
+    protected abstract Tile getTile(int x, int y);
+    protected abstract void initializeTiles();
+    protected abstract void initializePieces(Player player1, Player player2);
+    protected abstract int getX();
+    protected abstract int getY();
     
-    public boolean isGameOver() 
-    {
-        for (int row = 0; row < getX(); row++) {
-            for (int col = 0; col < getY(); col++) {
-                Tile tile = board[row][col];
-                if (tile instanceof Base && tile.getPiece() != null) {
-                    Piece piece = tile.getPiece();
-                    Base base = (Base) tile;
-                    if (piece.getPlayerId() != base.getPlayer()) 
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
     
     public Tile[][] getBoard() {
         return board;

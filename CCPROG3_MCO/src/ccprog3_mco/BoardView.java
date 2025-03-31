@@ -52,11 +52,12 @@ public class BoardView {
     }
 
     
-    private void initiatePiece(Graphics2D g, Piece piece, int x, int y) {
+    private void initiatePiece(Graphics2D g, Piece piece, int x, int y) 
+    {
         String pieceType = piece.getType().toLowerCase();
         int playerId = piece.getPlayerId();
         
-        String imagePath = "src/Picture/" + pieceType + playerId + ".png";
+        String imagePath = "src/Pictures/" + pieceType + playerId + ".png";
         try {
             File imageFile = new File(imagePath);
             Image pieceImage = ImageIO.read(imageFile);

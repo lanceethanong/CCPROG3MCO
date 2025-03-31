@@ -5,13 +5,6 @@ public class Player {
     private ArrayList<Piece> pieces; // Aggregation: Player HAS multiple Pieces
     private int number;
     
-    public Player(int number) 
-    {
-    	this.number = number;
-        this.name = null;
-        this.pieces = new ArrayList<>();
-    }
-    
     public Player(int number,String name) 
     {
     	this.number = number;
@@ -58,22 +51,5 @@ public class Player {
     		return true;
     	}
     }
-
-//    // Display the player's pieces
-//    public void displayPieces() 
-//    {
-//    	if(name == null)
-//    	{
-//        System.out.println("Player"+number+"'s Pieces:");
-//    	}
-//    	else
-//    	{
-//    	System.out.println(name+"'s Pieces:");	
-//    	}
-//        for (Piece piece : pieces) 
-//        {
-//            System.out.println(piece.display());
-//        }
-//    }
     
 }

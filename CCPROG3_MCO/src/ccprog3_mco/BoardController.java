@@ -6,14 +6,10 @@ public class BoardController {
     private BoardView view;
     private Piece activePiece;
     
-    public BoardController(Board model, BoardView view) {
+    public BoardController(Board model, BoardView view) 
+    {
         this.model = model;
         this.view = view;
-    }
-    
-    public boolean isGameOver() 
-    {
-        return model.isGameOver();
     }
     
     public Tile getTile(int x, int y) {
